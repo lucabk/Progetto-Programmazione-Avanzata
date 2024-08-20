@@ -8,8 +8,6 @@ Installazione WSL con Ubuntu.
  ```bash
    wsl --install
    ```
-![image](https://github.com/user-attachments/assets/0aad71a9-9819-4086-9845-c5391797305c)
-
 
 Per installare una distribuzione in particolare si usa il comando  ```bash wsl --install <Distribution Name> ```; la lista delle distribuzioni si ottiene lanciando:  ```bash wsl --list --online   ```.
 Se si ha una sola distribuzione Linux installata, basta eseguire il comando:
@@ -26,7 +24,7 @@ Alcuni comandi possono risultare utili:
 - Arresto della macchina Linux su WSL ```bash wsl --shutdown ```
 
 
-### Visual Studio Code con WSL
+### 1.2 VSCode WSL
 
 
 #### Bibliografia
