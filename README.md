@@ -61,23 +61,24 @@ Git è già installato con la maggior parte delle distribuzioni del sottosistema
 sudo apt-get install git
 ```
 
-Per installare il file di configurazione Git, aprire una riga di comando per la distribuzione in uso e impostare il nome con questo comando (sostituendo "Nome" con il proprio nome utente):
+Per installare il file di configurazione Git, aprire una riga di comando per la distribuzione in uso e impostare il nome con questo comando:
 ```bash
 git config --global user.name "Your Name"
 ```
-Impostare la propria email con questo comando (sostituendo "youremail@domain.com" con l'indirizzo di posta elettronica personale):
+Impostare la propria email con questo comando:
 ```bash
 git config --global user.email "youremail@domain.com"
 ```
 . Se è necessario modificare la configurazione Git, è possibile usare un editor di testo integrato come Nano: ```bash nano ~/.gitconfig ```.
 
 
+### 1.4 Docker
+Docker Desktop per Windows offre un ambiente di sviluppo per la compilazione, la spedizione e l'esecuzione di app con docker. Abilitando il sistema basato su WSL 2, è possibile eseguire contenitori sia Linux che Windows in Docker Desktop nello stesso computer. Quindi, scaricare <a href="https://docs.docker.com/desktop/wsl/#turn-on-docker-desktop-wsl-2">Docker Desktop</a>, avviare docker e assicurarsi che, nelle impostazioni, sia abilitato l'utilizzo con WSL2. 
+
 
 ### Bibliografia
-Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
-
-VSCode WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-vscode
-
-Remote Development Extension Pack: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
-
-WSL Git: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-git
+- Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+- VSCode WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-vscode
+- Remote Development Extension Pack: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
+- WSL Git: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-git
+- Docker in WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-containers
