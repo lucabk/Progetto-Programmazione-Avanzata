@@ -117,6 +117,36 @@ npm -v # should print `10.8.1`
 
 ![image](https://github.com/user-attachments/assets/c89554fc-b673-4a83-ae80-1a7be071a0de)
 
+### 1.6 Richieste web
+#### 1.6.1 Postman 
+Al fine di automatizzare le richieste si fa uso di <a href="https://www.postman.com/">Postman</a>. Postman include un client API integrato che permette di creare e inviare richieste API, incluse richieste HTTP. Con Postman, si può inviare una richiesta a un endpoint, recuperare dati da una fonte dati, o testare la funzionalità di un'API, tramite interfaccia grafica. Per usufruire del servizio bisogna registrarsi o loggarsi con account Google.
+
+#### 1.6.2 Newman
+Newman è uno strumento a riga di comando che permette di eseguire le collezioni di Postman direttamente dal terminale. È particolarmente utile per l'automazione dei test delle API, integrando facilmente i test in pipeline di integrazione continua (CI/CD). Con Newman, si possono eseguire test, generare report e validare il comportamento delle API in modo programmato e ripetibile. Sulla Ubuntu WSL si <a href="https://learning.postman.com/docs/collections/using-newman-cli/installing-running-newman/">installa Newman</a> con il comando:
+```bash
+$ npm install -g newman
+```
+La versione di Node deve essere almeno la 16. Prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
+
+#### 1.6.3 Utilizzare le collection
+Una volta create le collection su Postman tramite browser del sitema host (Windows) si devono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata l'API di Postman tramite token di autenticazione; prima di tutto va creata la chiave API:
+- Accedi a Postman con il tuo account.
+- Clicca sulla tua foto profilo in alto a destra e seleziona Account Settings.
+- Nel menù laterale, seleziona API Keys.
+- Crea una nuova API Key cliccando su Generate API Key.
+- Dai un nome alla chiave, quindi copia l'API Key generata.
+
+Successivamente si vanno a recuperare tutte le collection del proprio account usando l'API di Postman:
+```bash
+curl -X GET "https://api.getpostman.com/collections?apikey=YOUR_API_KEY"
+```
+Questo comando restituirà un elenco di tutte le collection nel tuo account, ciascuna con il suo ID. Scelto l'ID della collection da scaricare la si può scaricare con il comando:
+```bash
+curl -X GET "https://api.getpostman.com/collections/YOUR_COLLECTION_ID?apikey=YOUR_API_KEY" -o collection.json
+```
+
+
+
 
 ### Bibliografia
 - Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
