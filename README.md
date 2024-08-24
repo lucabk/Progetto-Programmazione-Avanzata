@@ -128,7 +128,7 @@ $ npm install -g newman
 ```
 La versione di Node deve essere almeno la 16. Prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
 
-#### 1.6.3 Utilizzare le collection
+#### 1.6.3 Scaricare le collection
 Una volta create le collection su Postman tramite browser del sitema host (Windows) si devono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata l'API di Postman tramite token di autenticazione; prima di tutto va creata la chiave API:
 - Accedi a Postman con il tuo account.
 - Clicca sulla tua foto profilo in alto a destra e seleziona Account Settings.
@@ -145,6 +145,11 @@ Questo comando restituirà un elenco di tutte le collection nel tuo account, cia
 curl -X GET "https://api.getpostman.com/collections/YOUR_COLLECTION_ID?apikey=YOUR_API_KEY" -o collection.json
 ```
 
+#### 1.6.4 Utilizzare le collection
+Per lanciare l'esecuzione della collection:
+```bash
+newman run COLLECTION_NAME.json
+```
 
 
 
