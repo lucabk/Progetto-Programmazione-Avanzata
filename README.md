@@ -288,9 +288,10 @@ docker compose up
 ```
 
 Si possono visualizzare il containerID e le statische di docker con i comandi: ```docker ps``` e ```dokcer stats```. La connesione al db può essere effetuata sia tramite GUI (Adminer) all'indirizzo http://localhost:8080 della macchina host, oppure tramite il terminale con il comando: ```docker exec -it containerID psql -U user password```. Alcuni comandi utili una volta connessi da terminale sono:
-- ```\dt``` elenca le tabelle nel database
 - ```\l``` elenca i database
+- ```\dt``` elenca le tabelle nel database
 -  ```\d nome_tabella``` elenca gli attributi della tabella specificata
+-  ```\q``` per chiudere la connessione al db
 -  si possono effettuare query direttamente in SQL 
 
 
