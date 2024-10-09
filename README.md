@@ -237,6 +237,7 @@ Nelle promise si utilizzerà la programmazione asincrona quindi, al fine di evit
 ```bash
 npm install express-async-errors
 ```
+La libreria deve essere importata e deve essere predisposto un middleware di gestione degli errori successivo alle rotte.
 
 #### 2.3.5 ZOD
 
