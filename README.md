@@ -292,7 +292,7 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 ####  Riferimenti
 
-- Full Stack Open: https://fullstackopen.com/en/
+- Full Stack Open - Containers: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part12)
 - Postgres: https://hub.docker.com/_/postgres
 - Sequelize: https://sequelize.org/
 
