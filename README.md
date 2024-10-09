@@ -152,8 +152,7 @@ newman run COLLECTION_NAME.json
 ```
 
 
-
-### Bibliografia
+#### Riferimenti
 - Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
 - VSCode WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-vscode
 - Remote Development Extension Pack: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack
@@ -161,6 +160,141 @@ newman run COLLECTION_NAME.json
 - Docker in WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-containers
 - Node.js in WSL: https://learn.microsoft.com/it-it/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm
 - Node.js Download: https://nodejs.org/en/download/package-manager
+
+______________________________________________________________
+
+
+## 2 - SETUP DELL'APPLICAZIONE
+### 2.1 Javascript - Typescript - Express 
+Per creare il progetto si parte dal classico comando di inizalizzazione per sviluppare un'applicazione in Javascript (JS):
+```bash
+npm init
+```
+Da qui si creerà il file package.json. Nella macchina WSL è gia installato Typescript globalmente, ma è buona norma aggiungerlo alle dipendenze di sviluppo:
+```bash
+ npm install typescript --save-dev
+```
+Il "compilatore" nativo di Typescript permettera la traduzione del codice con il comando ```tsc``` che, ad ogni modo, per coerenza nello sviluppo verrà integrato negli script del package.json.
+![image](https://github.com/user-attachments/assets/dc25f6d9-39f7-4157-b9d1-a74ca470c295)
+
+Adesso si può creare il file di configurazione di Typescript (TS): tsconfig.json. Si utilizza lo script appena settato:
+```bash
+ npm run tsc -- --init
+```
+Si ricorda che, per non dare errori, Typescript si aspetta almeno un file .ts nella propria cartella. La configurazione del file tsconfig.js avrà le seguenti caratteristiche:
+![image](https://github.com/user-attachments/assets/55021a73-2300-4dc3-a5ca-5588ebe17392)
+
+Il file JS che verrà realizzato andrà dunque salvato in un'apposita cartella (da creare) nella root del progetto, denominata "build". 
+In seguito, dato che il progetto si occuperà dello sviluppo di un'applicazione backend in TS si utilizzerà la libreria Express e la sua tipizzazione:
+```bash
+npm install express
+npm install --save-dev @types/express
+```
+
+Per facilitare lo sviluppo, verrà fatto uso di ts-node:
+```bash
+npm install --save-dev ts-node-dev
+```
+che verrà anche aggiunto tra gli script:
+![image](https://github.com/user-attachments/assets/57884f37-0d1b-430a-8190-bf7b0227f56d)
+
+### 2.2 ESlint e Production mode
+Si utilizzerà anche ESlint per una maggior chiarezza e soldità nello sviluppo:
+```bash
+npm install --save-dev eslint @eslint/js typescript-eslint @stylistic/eslint-plugin  @types/eslint__js
+```
+Si aggiornano gli script per facilitarne l'utilizzo:
+![image](https://github.com/user-attachments/assets/cde9df07-e1b4-4aa1-9ca9-cce15f961cb9)
+
+Per abilitare le regole si crea un file, nella root del progetto, denominato: eslint.config.mjs. Il contenuto del file può essere consultato nella repository.
+
+
+Si aggiunge anche uno script per lanciare il programma in production mode:
+![image](https://github.com/user-attachments/assets/8e396939-fda5-4d5d-aaba-a8bbcca91f84)
+
+
+### 2.3 Altri pacchetti
+#### 2.3.1 Cors
+```bash
+npm install cors
+npm install --save-dev @types/cors
+```
+
+#### 2.3.2 Sequelize
+Si installano i pachetti relativi a Postgres, Sequelize e dotenv (per le variabili di ambiente)
+```bash
+npm install dotenv pg sequelize
+npm install --save-dev @types/dotenv @types/pg @types/sequelize
+```
+
+#### 2.3.4 Async errors
+Nelle promise si utilizzerà la programmazione asincrona quindi, al fine di evitare blocchi di codice "try-catch" si installa la libreria di express per la gestione automatica degli errori tramite middleware:
+```bash
+npm install express-async-errors
+```
+
+#### 2.3.5 ZOD
+
+#### 2.3.6 JWT
+
+#### 2.3.7 Test
+
+___________________________________________________________
+nota1: la versione finale del package.json può essere consultata nella repository.
+
+nota2: per scelte di autore, la repository sarà interamente in italiano, mentre il codice (ed i relativi commenti) in lingua inglese.
+
+####  Riferimenti
+
+- Full Stack Open - Typing an Express app: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part9/typing_an_express_app)
+- express-async-errors: https://fullstackopen.com/en/part4/testing_the_backend#eliminating-the-try-catch
+___________________________________________________________
+  
+## 3 - DOCKERIZZAZIONE
+
+### 3.1 PostgreSQL
+### Configurazione Docker per il Servizio Database
+
+Questo progetto utilizza Docker per eseguire un container PostgreSQL e uno strumento di gestione database basato su web, **Adminer**. Ecco come sono definiti i servizi nel file `docker-compose.yml`:
+
+- **db**: Esegue PostgreSQL, espone la porta `5432` e utilizza il volume persistente `db-data` per salvare i dati.
+  - Variabili d'ambiente: `POSTGRES_USER`, `POSTGRES_PASSWORD`, e `POSTGRES_DB`.
+  - Limite di memoria condivisa impostato a `128mb`.
+
+- **adminer**: Fornisce un'interfaccia web leggera per la gestione del database, accessibile sulla porta `8080`.
+
+Il volume `db-data` consente di mantenere i dati persistenti anche dopo i riavvii del container.
+
+```mermaid
+graph TD;
+    A[Docker Services] --> B[PostgreSQL Service: db];
+    A --> C[Adminer: Web Management Tool];
+
+    B -->|Port: 5432| D[PostgreSQL Container];
+    C -->|Port: 8080| E[Adminer Container];
+
+    B --> F[Environment Variables];
+    F -->|POSTGRES_USER| D;
+    F -->|POSTGRES_PASSWORD| D;
+    F -->|POSTGRES_DB| D;
+
+    D --> G[db-data Volume];
+    G -->|Persistent Data| D;
+```
+
+Per lanciare i container si utilizza il comando:
+```bash
+docker compose up
+```
+
+Si possono visualizzare il containerID e le statische di docker con i comandi: ```docker ps``` e ```dokcer stats```. La connesione al db può essere effetuata sia tramite GUI (Adminer) all'indirizzo http://localhost:8080 della macchina host, oppure tramite il terminale con il comando: ```docker exec -it containerID psql -U user password```.
+
+
+####  Riferimenti
+
 - Full Stack Open: https://fullstackopen.com/en/
 - Postgres: https://hub.docker.com/_/postgres
 - Sequelize: https://sequelize.org/
+
+
+## 4 - STRUTTURA DEL PROGETTO
