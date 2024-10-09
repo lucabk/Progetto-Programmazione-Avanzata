@@ -303,11 +303,17 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 - Full Stack Open - Containers: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part12)
 - Postgres: https://hub.docker.com/_/postgres
-- Sequelize: https://sequelize.org/
+
 
 
 ## 4 - STRUTTURA DEL PROGETTO
 
+
+####  Riferimenti
+- Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
+">corso</a>
+- Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
+- Sequelize: https://sequelize.org/
 
 ## 5 - TEST
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
