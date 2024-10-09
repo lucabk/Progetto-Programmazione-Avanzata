@@ -291,7 +291,7 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 - ```\l``` elenca i database
 - ```\dt``` elenca le tabelle nel database
 -  ```\d nome_tabella``` elenca gli attributi della tabella specificata
--  ```\q``` per chiudere la connessione al db
+-  ```\q``` chiude la connessione al db
 -  si possono effettuare query direttamente in SQL 
 
 
