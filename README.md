@@ -198,6 +198,11 @@ npm install --save-dev ts-node-dev
 che verrà anche aggiunto tra gli script:
 ![image](https://github.com/user-attachments/assets/57884f37-0d1b-430a-8190-bf7b0227f56d)
 
+Per lanciare l'applicazione in modalità sviluppatore si usa il comando:
+```bash
+npm run dev
+```
+
 ### 2.2 ESlint e Production mode
 Si utilizzerà anche ESlint per una maggior chiarezza e soldità nello sviluppo:
 ```bash
@@ -249,6 +254,7 @@ nota2: per scelte di autore, la repository sarà interamente in italiano, mentre
 ___________________________________________________________
   
 ## 3 - DOCKERIZZAZIONE
+La scelta implementativa utilizzata prevede di dockerizzare sin da subito l'istanza del database Postgres; mentre lo sviluppo dell'applicazione TS viene effettuata direttamente sulla macchina host per poi, successivamente, essere dockerizzata anch'essa. Questa scelta è stata presa ai fini di semplificare lo sviluppo dell'applicazione.
 
 ### 3.1 PostgreSQL
 ### Configurazione Docker per il Servizio Database
