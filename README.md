@@ -312,7 +312,10 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 ####  Riferimenti
 - Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
 ">corso</a>
+- JS basics: https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
+- TS basics: https://learn.microsoft.com/en-us/training/paths/build-javascript-applications-typescript/
 - Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
+- Express: https://expressjs.com/
 - Sequelize: https://sequelize.org/
 
 ## 5 - TEST
