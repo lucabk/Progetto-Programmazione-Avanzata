@@ -161,4 +161,6 @@ newman run COLLECTION_NAME.json
 - Docker in WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-containers
 - Node.js in WSL: https://learn.microsoft.com/it-it/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm
 - Node.js Download: https://nodejs.org/en/download/package-manager
+- Full Stack Open: https://fullstackopen.com/en/
 - Postgres: https://hub.docker.com/_/postgres
+- Sequelize: https://sequelize.org/
