@@ -237,8 +237,6 @@ npm install express-async-errors
 
 #### 2.3.6 JWT
 
-#### 2.3.7 Test
-
 ___________________________________________________________
 nota1: la versione finale del package.json può essere consultata nella repository.
 
@@ -303,3 +301,19 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 
 ## 4 - STRUTTURA DEL PROGETTO
+
+
+## 5 - TEST
+Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
+
+### 5.1 VSCode Rest client
+Un metodo molto semplice per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
+
+### 5.2 Postman - Newman
+### 5.3 Librerie node:test e supertest
+
+####  Riferimenti
+-  Full Stack Open - REST client: https://fullstackopen.com/en/part3/node_js_and_express#the-visual-studio-code-rest-client
+-  Full Stack Open - Testing Node app: https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#testing-node-applications
+-  Full Stack Open - Testing the backend: https://fullstackopen.com/en/part4/testing_the_backend
+
