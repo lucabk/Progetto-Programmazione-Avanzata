@@ -240,10 +240,17 @@ npm install express-async-errors
 La libreria deve essere importata e deve essere predisposto un middleware di gestione degli errori successivo alle rotte.
 
 #### 2.3.5 ZOD
+```bash
+npm install zod
+```
 
 #### 2.3.6 JWT
 
 #### 2.3.7 Morgan Middleware
+```bash
+npm install morgan
+npm install --save-dev @types/morgan
+```
 ___________________________________________________________
 nota1: la versione finale del package.json può essere consultata nella repository.
 
