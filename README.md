@@ -319,6 +319,7 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 - Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
 - Express: https://expressjs.com/
 - Sequelize: https://sequelize.org/
+- TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
 
 ## 5 - TEST
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
