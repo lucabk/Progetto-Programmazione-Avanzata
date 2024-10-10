@@ -254,7 +254,7 @@ npm install morgan
 npm install --save-dev @types/morgan
 ```
 ___________________________________________________________
-nota1: la versione finale del package.json può essere consultata nella repository.
+nota1: la versione finale del package.json e del tsconfig.json possono essere consultati direttamente nella repository.
 
 nota2: per scelte di autore, la repository sarà interamente in italiano, mentre il codice (ed i relativi commenti) in lingua inglese.
 
