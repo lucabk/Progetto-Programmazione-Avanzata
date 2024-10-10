@@ -240,6 +240,7 @@ npm install express-async-errors
 La libreria deve essere importata e deve essere predisposto un middleware di gestione degli errori successivo alle rotte.
 
 #### 2.3.5 ZOD
+Zod è una libreria di validazione di schema e verrà utilizzata per validare i dati inviati al server. Si installa con il comando:
 ```bash
 npm install zod
 ```
@@ -247,6 +248,7 @@ npm install zod
 #### 2.3.6 JWT
 
 #### 2.3.7 Morgan Middleware
+Si farà uso anche del middleware Morgan per il log delle richieste. Installazione:
 ```bash
 npm install morgan
 npm install --save-dev @types/morgan
@@ -260,6 +262,8 @@ nota2: per scelte di autore, la repository sarà interamente in italiano, mentre
 
 - Full Stack Open - Typing an Express app: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part9/typing_an_express_app)
 - express-async-errors: https://fullstackopen.com/en/part4/testing_the_backend#eliminating-the-try-catch
+- Zod: https://zod.dev/
+- Morgan: https://github.com/expressjs/morgan
 ___________________________________________________________
   
 ## 3 - DOCKERIZZAZIONE
