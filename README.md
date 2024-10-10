@@ -243,6 +243,7 @@ La libreria deve essere importata e deve essere predisposto un middleware di ges
 
 #### 2.3.6 JWT
 
+#### 2.3.7 Morgan Middleware
 ___________________________________________________________
 nota1: la versione finale del package.json può essere consultata nella repository.
 
