@@ -253,6 +253,11 @@ Si farà uso anche del middleware Morgan per il log delle richieste. Installazio
 npm install morgan
 npm install --save-dev @types/morgan
 ```
+#### 2.3.8 Http status codes
+Viene utilizzata una libreria per segnalare lo status code delle operazioni HTTP:
+```bash
+npm install http-status-codes
+```
 ___________________________________________________________
 nota1: la versione finale del package.json e del tsconfig.json possono essere consultati direttamente nella repository.
 
