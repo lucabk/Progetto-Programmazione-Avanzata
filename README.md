@@ -257,6 +257,7 @@ Si farà uso anche del middleware Morgan per il log delle richieste. Installazio
 ```bash
 npm install morgan
 npm install --save-dev @types/morgan
+npm install @types/bcrypt @types/jsonwebtoken --save-dev
 ```
 #### 2.3.8 Http status codes
 Viene utilizzata una libreria per segnalare lo status code delle operazioni HTTP:
