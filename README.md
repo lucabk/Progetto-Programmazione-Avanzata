@@ -246,6 +246,11 @@ npm install zod
 ```
 
 #### 2.3.6 JWT
+Si utilizza JSON Web Token per effettuare richieste autenticate. Inoltre, si userà la libreria bcrypt per fare l'hash delle password.
+```bash
+npm install jsonwebtoken
+npm install bcrypt
+```
 
 #### 2.3.7 Morgan Middleware
 Si farà uso anche del middleware Morgan per il log delle richieste. Installazione:
