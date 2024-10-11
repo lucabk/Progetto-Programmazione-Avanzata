@@ -250,6 +250,7 @@ Si utilizza JSON Web Token per effettuare richieste autenticate. Inoltre, si use
 ```bash
 npm install jsonwebtoken
 npm install bcrypt
+npm install @types/bcrypt @types/jsonwebtoken --save-dev
 ```
 
 #### 2.3.7 Morgan Middleware
@@ -257,7 +258,6 @@ Si farà uso anche del middleware Morgan per il log delle richieste. Installazio
 ```bash
 npm install morgan
 npm install --save-dev @types/morgan
-npm install @types/bcrypt @types/jsonwebtoken --save-dev
 ```
 #### 2.3.8 Http status codes
 Viene utilizzata una libreria per segnalare lo status code delle operazioni HTTP:
