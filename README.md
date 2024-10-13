@@ -332,7 +332,18 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 
 ## 4 - STRUTTURA DEL PROGETTO
+### 4.1 Disposizione delle diretory
+### 4.2 Design patterns utilizzati
+#### 4.2.1 MVC (Model-View-Controller)
+Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
 
+- Manutenibilità: Separazione delle responsabilità tra modelli, controller e router, facilitando le modifiche e la gestione del codice.
+- Testabilità: Ogni componente può essere testato separatamente, migliorando la qualità del software.
+- Riutilizzabilità: Componenti come modelli e controller possono essere riutilizzati in diverse parti dell'applicazione.
+- Scalabilità: La struttura facilita l'aggiunta di nuove funzionalità senza compromettere l'architettura esistente.
+- Chiarezza e Organizzazione: Il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
+
+#### 4.3.2 Singleton
 
 ####  Riferimenti
 - Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
