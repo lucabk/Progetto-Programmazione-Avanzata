@@ -151,6 +151,7 @@ Per lanciare l'esecuzione della collection:
 newman run COLLECTION_NAME.json
 ```
 
+NB: Nell'utilizzare Newman da terminale è necesario evitare l'uso di variabili d'ambiente su Postman nella definizione del JWT per non ricadere nell'errore: "Invalid character in header content ["Authorization"]".
 
 #### Riferimenti
 - Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
