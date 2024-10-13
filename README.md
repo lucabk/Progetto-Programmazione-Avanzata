@@ -344,6 +344,11 @@ Il progetto utilizza il pattern MVC per organizzare il codice del backend. Quest
 - Chiarezza e Organizzazione: Il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
 
 #### 4.3.2 Singleton
+Il progetto utilizza il pattern Singleton per gestire la connessione al database. Questo approccio offre numerosi vantaggi:
+
+- Istanza Unica: Garantisce che ci sia una sola istanza di Sequelize in tutta l'applicazione, evitando problemi di concorrenza e migliorando l'efficienza.
+- Punto di Accesso Globale: La costante sequelize è accessibile globalmente attraverso l'importazione nei modelli, facilitando la gestione della connessione al database.
+- Manutenibilità: Centralizza la gestione della connessione al database, rendendo il codice più facile da mantenere e aggiornare.
 
 ####  Riferimenti
 - Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
