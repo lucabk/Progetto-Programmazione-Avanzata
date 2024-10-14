@@ -340,6 +340,17 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 ## 4 - STRUTTURA DEL PROGETTO
 ### 4.1 Disposizione delle diretory
+
+#### 4.x PostgreSQL
+##### 4.x.y Migration and Seed
+Si è scelto di utilizzare le migrazioni per gestire le modifiche al database invece del metodo `sync()` per i seguenti motivi:
+1. **Controllo Versione**: Le migrazioni permettono di tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
+3. **Automazione**: Possono essere automatizzate ed (eventualmente) integrate nei processi di CI/CD.
+4. **Documentazione**: Ogni migrazione documenta una modifica specifica, rendendo più chiaro il motivo delle modifiche.
+
+Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test e controllarne il corretto funzionamento.
+
+
 ### 4.2 Design patterns utilizzati
 #### 4.2.1 MVC (Model-View-Controller)
 Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
