@@ -265,6 +265,13 @@ Viene utilizzata una libreria per segnalare lo status code delle operazioni HTTP
 ```bash
 npm install http-status-codes
 ```
+
+#### 2.3.9 Umzug
+la libreria umzug verrà utilizzata per fare le migration di Postgres.
+```bash
+npm install umzug
+```
+Nel path della migrazione va specificato il path assoluto della cartella relativa alle migrazioni, NON quello relativo.
 ___________________________________________________________
 nota1: la versione finale del package.json e del tsconfig.json possono essere consultati direttamente nella repository.
 
