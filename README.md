@@ -341,8 +341,8 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 ## 4 - STRUTTURA DEL PROGETTO
 ### 4.1 Disposizione delle diretory
 
-#### 4.x PostgreSQL
-##### 4.x.y Migration and Seed
+#### 4.2 PostgreSQL
+##### 4.2.1 Migration and Seed
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database invece del metodo `sync()` per i seguenti motivi:
 1. **Controllo Versione**: Le migrazioni permettono di tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
 3. **Automazione**: Possono essere automatizzate ed (eventualmente) integrate nei processi di CI/CD.
@@ -350,9 +350,18 @@ Si è scelto di utilizzare le migrazioni per gestire le modifiche al database in
 
 Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test e controllarne il corretto funzionamento.
 
+#### 4.3 JSON Web Token
+Per semplificare l'implementazione si è utilizzata una generazione dei token basata su crittografia simmetrica, mediante la chiave (KEY) salvata nel file delle variabili di ambiente. Ad ogni modo, per implementare un'autenticazione basata su crittografia simmetrica si può procedere secondo i seguenti passaggi:
+1. Si genera la coppia chiave pubblica - chiave privata (RSA) direttamente da terminale tramite openssl (preinstallato su Ubuntu):
+```bash
+openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+```
+2. Si sostituisce alla chiave simmetrica la chiave privata (jwtRS256.key) nella generazione (firma) del token con il metodo .sign()
+3. Si sostituisce alla chiave simmetrica la chiave pubblica (jwtRS256.key.pub) nella verifica del token tramite il metodo .verify()
 
-### 4.2 Design patterns utilizzati
-#### 4.2.1 MVC (Model-View-Controller)
+
+## 5 - DESIGN PATTERN UTILIZZATI
+### 5.1 MVC (Model-View-Controller)
 Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
 
 - Manutenibilità: Separazione delle responsabilità tra modelli, controller e router, facilitando le modifiche e la gestione del codice.
@@ -361,7 +370,7 @@ Il progetto utilizza il pattern MVC per organizzare il codice del backend. Quest
 - Scalabilità: La struttura facilita l'aggiunta di nuove funzionalità senza compromettere l'architettura esistente.
 - Chiarezza e Organizzazione: Il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
 
-#### 4.3.2 Singleton
+### 5.2 Singleton
 Il progetto utilizza il pattern Singleton per gestire la connessione al database. Questo approccio offre numerosi vantaggi:
 
 - Istanza Unica: Garantisce che ci sia una sola istanza di Sequelize in tutta l'applicazione, evitando problemi di concorrenza e migliorando l'efficienza.
@@ -378,14 +387,14 @@ Il progetto utilizza il pattern Singleton per gestire la connessione al database
 - Sequelize: https://sequelize.org/
 - TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
 
-## 5 - TEST
+## 6 - TEST
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
 
-### 5.1 VSCode Rest client
+### 6.1 VSCode Rest client
 Un metodo molto semplice per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste. Questi test sono preliminari e dovuti agli istanti iniziali di sviluppo dell'applicazione, quindi non devono essere considerati assolutamente come dei test finali ed esaustivi dell'intero progetto.
 
-### 5.2 Postman - Newman
-### 5.3 Librerie node:test e supertest
+### 6.2 Postman - Newman
+### 6.3 Librerie node:test e supertest
 
 ####  Riferimenti
 -  Full Stack Open - REST client: https://fullstackopen.com/en/part3/node_js_and_express#the-visual-studio-code-rest-client
