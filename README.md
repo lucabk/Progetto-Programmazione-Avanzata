@@ -343,12 +343,8 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 
 #### 4.2 PostgreSQL
 ##### 4.2.1 Migration and Seed
-Si è scelto di utilizzare le migrazioni per gestire le modifiche al database invece del metodo `sync()` per i seguenti motivi:
-1. **Controllo Versione**: Le migrazioni permettono di tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
-3. **Automazione**: Possono essere automatizzate ed (eventualmente) integrate nei processi di CI/CD.
-4. **Documentazione**: Ogni migrazione documenta una modifica specifica, rendendo più chiaro il motivo delle modifiche.
-
-Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test e controllarne il corretto funzionamento.
+Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
+Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato.
 
 #### 4.3 JSON Web Token
 Per semplificare l'implementazione si è utilizzata una generazione dei token basata su crittografia simmetrica, mediante la chiave (KEY) salvata nel file delle variabili di ambiente. Ad ogni modo, per implementare un'autenticazione basata su crittografia asimmetrica si può procedere secondo i seguenti passaggi:
