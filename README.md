@@ -346,6 +346,10 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
 Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato.
 
+##### 4.2.2 Adminer
+Come accennato nella sezione relativa a Docker, è stato utilizzato un tool per il management del database, Adminer. Questa scelta implementativa è dovuta sia alla necessità di avere a disposizione una rapida visualizzazione dei dati in Postgres durante lo sviluppo ed i test, sia per avere una interfaccia grafica leggera per controllare lo stato del db in produzione.
+
+
 #### 4.3 JSON Web Token
 Per semplificare l'implementazione si è utilizzata una generazione dei token basata su crittografia simmetrica, mediante la chiave (KEY) salvata nel file delle variabili di ambiente. Ad ogni modo, per implementare un'autenticazione basata su crittografia asimmetrica si può procedere secondo i seguenti passaggi:
 1. Si genera la coppia chiave pubblica - chiave privata (RSA) direttamente da terminale tramite openssl (preinstallato su Ubuntu):
