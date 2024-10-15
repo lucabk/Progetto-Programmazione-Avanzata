@@ -386,6 +386,7 @@ Il progetto utilizza il pattern Singleton per gestire la connessione al database
 - Express: https://expressjs.com/
 - Sequelize: https://sequelize.org/
 - TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
+- Esercitazioni personali: https://github.com/lucabk/Full-Stack-Open
 
 ## 6 - TEST
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
