@@ -360,6 +360,19 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 3. Si sostituisce alla chiave simmetrica la chiave pubblica (jwtRS256.key.pub) nella verifica del token tramite il metodo <i>.verify()</i>
 
 
+####  Riferimenti
+- Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
+">corso</a>
+- JS basics: https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
+- TS basics: https://learn.microsoft.com/en-us/training/paths/build-javascript-applications-typescript/
+- Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
+- Express: https://expressjs.com/
+- Sequelize: https://sequelize.org/
+- TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
+- Esercitazioni personali: https://github.com/lucabk/Full-Stack-Open
+
+
+  
 ## 5 - DESIGN PATTERN UTILIZZATI
 ### 5.1 MVC (Model-View-Controller)
 Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
@@ -377,16 +390,17 @@ Il progetto utilizza il pattern Singleton per gestire la connessione al database
 - Punto di Accesso Globale: La costante sequelize è accessibile globalmente attraverso l'importazione nei modelli, facilitando la gestione della connessione al database.
 - Manutenibilità: Centralizza la gestione della connessione al database, rendendo il codice più facile da mantenere e aggiornare.
 
+### 5.3 Factory
+Il progetto utilizza il pattern Factory per la gestione degli errori. Questo approccio offre numerosi vantaggi:
+
+- Centralizzazione della Logica di Creazione: La logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione.
+- Flessibilità: Permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza.
+- Chiarezza e Organizzazione: Migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori.
+
+
 ####  Riferimenti
-- Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
-">corso</a>
-- JS basics: https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
-- TS basics: https://learn.microsoft.com/en-us/training/paths/build-javascript-applications-typescript/
-- Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
-- Express: https://expressjs.com/
-- Sequelize: https://sequelize.org/
-- TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
-- Esercitazioni personali: https://github.com/lucabk/Full-Stack-Open
+- Factory: [https://github.com/manciniadriano/pa2021/tree/main](https://github.com/manciniadriano/pa2021/blob/main/pattern/factory/factoryErr.ts)
+
 
 ## 6 - TEST
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
