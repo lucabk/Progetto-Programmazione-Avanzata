@@ -281,7 +281,6 @@ ___________________________________________________________
 La scelta implementativa utilizzata prevede di dockerizzare sin da subito l'istanza del database Postgres; mentre lo sviluppo dell'applicazione TS viene effettuata direttamente sulla macchina host per poi, successivamente, essere dockerizzata anch'essa. Questa scelta è stata presa ai fini di semplificare lo sviluppo dell'applicazione.
 
 ### 3.1 PostgreSQL
-### Configurazione Docker per il Servizio Database
 
 Questo progetto utilizza Docker per eseguire un container PostgreSQL e uno strumento di gestione database basato su web, **Adminer**. Ecco come sono definiti i servizi nel file `docker-compose.yml`:
 
@@ -312,7 +311,7 @@ graph TD;
 
 Per lanciare i container si utilizza il comando:
 ```bash
-docker compose up
+docker compose up [-d]
 ```
 
 Si possono visualizzare il containerID e le statische di docker con i comandi: ```docker ps``` e ```docker stats```. La connesione al db può essere effetuata sia tramite GUI (Adminer) all'indirizzo http://localhost:8080 della macchina host, oppure tramite il terminale con il comando: ```docker exec -it containerID psql -U user password```. Alcuni comandi utili una volta connessi da terminale sono:
@@ -322,12 +321,19 @@ Si possono visualizzare il containerID e le statische di docker con i comandi: `
 -  ```\q``` chiude la connessione al db
 -  si possono effettuare query direttamente in SQL 
 
+### 3.2 Applicazione
+Come anticipato, l'applicazione è stata sviluppata eseguendo Typescript (con ts-node) in locale sulla WSL ed interfacciandosi con il container Postgres per le operazioni. La dockerizzazione dell'app quindi avverrà direttamente in Javascript, perché costituisce la "traduzione" del programma Typescript testato; questo permette di <i>buildare</i> un cotainer più leggero, privo di riferimenti a Typescript. Dunque, la transpilazione viene eseguita in locale, in modo da copiare direttamente il codice JS nel container. Si compila con il comando:
+```bash
+npm run tsc
+```
+Successivamente si scrivono Dockerfile (npm run start) e si amplia il Docker Compose.......
+
 
 ####  Riferimenti
 
 - Full Stack Open - Containers: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part12)
 - Postgres: https://hub.docker.com/_/postgres
-
+- Best practices: https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
 
 
 ## 4 - STRUTTURA DEL PROGETTO
