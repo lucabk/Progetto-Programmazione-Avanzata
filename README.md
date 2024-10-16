@@ -128,30 +128,21 @@ $ npm install -g newman
 ```
 La versione di Node deve essere almeno la 16. Prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
 
-#### 1.6.3 Scaricare le collection
-Una volta create le collection su Postman tramite browser del sitema host (Windows) si devono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata l'API di Postman tramite token di autenticazione; prima di tutto va creata la chiave API:
-- Accedi a Postman con il tuo account.
-- Clicca sulla tua foto profilo in alto a destra e seleziona Account Settings.
-- Nel menù laterale, seleziona API Keys.
-- Crea una nuova API Key cliccando su Generate API Key.
-- Dai un nome alla chiave, quindi copia l'API Key generata.
-
-Successivamente si vanno a recuperare tutte le collection del proprio account usando l'API di Postman:
+#### 1.6.3 Scaricare le collection e le variabili di ambiente
+Una volta create le collection su Postman tramite browser del sitema host (Windows) si devono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata la Collection access key. Si apre la collection sull'app Postman, si clicca su share (in alto a dx), si seleziona via API e si copia il contenuto. La creazione della chiave risulterà anche nel profilo personale: dal browser dirigerersi all'<a href="https://www.postman.com/">indirizzo</a>, cliccare sulla propria icona in alto a destra>settings>API keys (nella barra di ricerca laterale). Si può quindi scaricare, all'interno della cartella <i>newman</i>, la collection con il comando:
 ```bash
-curl -X GET "https://api.getpostman.com/collections?apikey=YOUR_API_KEY"
+curl -X GET "COLLECTION_KEY" -o collection.json
 ```
-Questo comando restituirà un elenco di tutte le collection nel tuo account, ciascuna con il suo ID. Scelto l'ID della collection da scaricare la si può scaricare con il comando:
-```bash
-curl -X GET "https://api.getpostman.com/collections/YOUR_COLLECTION_ID?apikey=YOUR_API_KEY" -o collection.json
-```
+Inoltre, siccome si è fatto uso di variabili d'ambiente per il Token, è necessario anche scaricare il file delle variabili di ambiente. Dall'applicazione Postman si seleziona il tab a sinistra <i>Environments</i> e, sul gruppo di interesse, si cliccano i tre puntini>export. Da qui si può copiare il contenuto del file e incollarlo nella direcotry precedente in un file json.
+Si ricorda di aggiungere questo file delle variabili di ambiente tra i file che vanno ignorati da git.
 
 #### 1.6.4 Utilizzare le collection
 Per lanciare l'esecuzione della collection:
 ```bash
-newman run COLLECTION_NAME.json
+newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 ```
+Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```.
 
-NB: Nell'utilizzare Newman da terminale è necesario evitare l'uso di variabili d'ambiente su Postman nella definizione del JWT per non ricadere nell'errore: "Invalid character in header content ["Authorization"]".
 
 #### Riferimenti
 - Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
@@ -161,6 +152,7 @@ NB: Nell'utilizzare Newman da terminale è necesario evitare l'uso di variabili 
 - Docker in WSL: https://learn.microsoft.com/it-it/windows/wsl/tutorials/wsl-containers
 - Node.js in WSL: https://learn.microsoft.com/it-it/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm
 - Node.js Download: https://nodejs.org/en/download/package-manager
+- Postman Collection access keys: https://learning.postman.com/docs/collaborating-in-postman/sharing/#share-using-the-postman-api
 
 ______________________________________________________________
 
