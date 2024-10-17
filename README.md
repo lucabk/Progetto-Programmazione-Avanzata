@@ -446,7 +446,7 @@ Un metodo molto semplice per effettuare richieste HTTP alle API direttamente da 
 I test sono stati effettuati tramite Newman. Prima di lanciare i test, bisogna clonare la repository ed avere installato Docker.
 
 ```bash
-git clone https://github.com/lucabk/Progetto-Programmazione-Avanzata
+git clone https://github.com/lucabk/Progetto-Programmazione-Avanzata.git
 ```
 
 Dato che i container fanno riferimento al file di variabili di ambiente, bisogna caricarne uno nella stessa directory del docker-compose:
