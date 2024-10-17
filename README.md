@@ -326,8 +326,51 @@ Come anticipato, l'applicazione è stata sviluppata eseguendo Typescript (con ts
 ```bash
 npm run tsc
 ```
-Successivamente si scrivono Dockerfile (npm run start) e si amplia il Docker Compose.......
+Successivamente si scrivono Dockerfile e si amplia il Docker Compose. Il Dockerfile fa riferimento alle variabili nel file .env con le variabili di ambiente configurate per il corretto funzionamento del sistema. Si ricorda che, avendo sviluppato l'applicazione fuori dal container, una volta dentro Docker i servizi di rete vengono gestiti automaticamente tramite l'hostname e non più l'indirizzo IPv4 localhost (127.0.0.1).
+Il Dockerfile prende alcuni accorgimenti: runnare da utente privo di privilegi di root e installare le dipendenze fedelmente alle versioni presenti in modo deterministico. 
+```bash
+FROM node:20
+ENV NODE_ENV production
 
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+RUN npm ci --only=production
+COPY --chown=node:node build ./build
+
+USER node
+
+CMD ["npm", "run", "start"]
+```
+
+Il docker-compose viene quindi ampliato per tenere conto anche dell'applicazione Javascript.
+
+```mermaid
+graph TD;
+    A[Docker Services] --> B[PostgreSQL Service: db];
+    A --> C[Adminer: Web Management Tool];
+    A --> H[App Service];
+
+    B -->|Port: 5432| D[PostgreSQL Container];
+    C -->|Port: 8080| E[Adminer Container];
+    H -->|Port: 3003| I[App Container];
+
+    B --> F[Environment Variables];
+    F -->|POSTGRES_USER| D;
+    F -->|POSTGRES_PASSWORD| D;
+    F -->|POSTGRES_DB| D;
+    
+    H --> J[Environment Variables for App];
+    J -->|DATABASE_URL| I;
+    J -->|JWT_SECRET| I;
+
+    D --> G[db-data Volume];
+    G -->|Persistent Data| D;
+
+  
+    I -->|Database Connection via Sequelize| D[PostgreSQL Container];
+
+```
 
 ####  Riferimenti
 
