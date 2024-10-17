@@ -136,13 +136,6 @@ curl -X GET "COLLECTION_KEY" -o collection.json
 Inoltre, siccome si è fatto uso di variabili d'ambiente per il Token, è necessario anche scaricare il file delle variabili di ambiente. Dall'applicazione Postman si seleziona il tab a sinistra <i>Environments</i> e, sul gruppo di interesse, si cliccano i tre puntini>export. Da qui si può copiare il contenuto del file e incollarlo nella direcotry precedente in un file json.
 Si ricorda di aggiungere questo file delle variabili di ambiente tra i file che vanno ignorati da git.
 
-#### 1.6.4 Utilizzare le collection
-Per lanciare l'esecuzione della collection:
-```bash
-newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
-```
-Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```.
-
 
 #### Riferimenti
 - Basic commands for WSL: https://learn.microsoft.com/en-us/windows/wsl/basic-commands
@@ -443,13 +436,44 @@ Il progetto utilizza il pattern Factory per la gestione degli errori. Questo app
 - Factory: [https://github.com/manciniadriano/pa2021/tree/main](https://github.com/manciniadriano/pa2021/blob/main/pattern/factory/factoryErr.ts)
 
 
-## 6 - TEST
+## 6 - TEST e AVVIO DELL'APP
 Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
 
 ### 6.1 VSCode Rest client
 Un metodo molto semplice per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste. Questi test sono preliminari e dovuti agli istanti iniziali di sviluppo dell'applicazione, quindi non devono essere considerati assolutamente come dei test finali ed esaustivi dell'intero progetto.
 
-### 6.2 Postman - Newman
+### 6.2 Newman e Avvio del servizio
+I test sono stati effettuati tramite Newman. Prima di lanciare i test, bisogna clonare la repository ed avere installato Docker.
+
+```bash
+git clone https://github.com/lucabk/Progetto-Programmazione-Avanzata
+```
+
+Dato che i container fanno riferimento al file di variabili di ambiente, bisogna caricarne uno nella stessa directory del docker-compose:
+
+```bash
+echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+PORT=3003
+POSTGRES_USER='postgres'
+POSTGRES_PASSWORD='postgres'
+POSTGRES_DB='postgres'
+KEY='mysecretkey'
+DATABASE_URL_PROD=postgres://postgres:postgres@db:5432/postgres'
+> .env
+```
+
+Quindi si può avviare il servizio con:
+```bash
+docker-compose up --build
+```
+
+Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata scaricata la collection e bisogna creare il file delle variabili di ambiente in formato <i>.json</i>. Per lanciare l'esecuzione della collection:
+```bash
+newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
+```
+Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```.
+
+
 ### 6.3 Librerie node:test e supertest
 
 ####  Riferimenti
