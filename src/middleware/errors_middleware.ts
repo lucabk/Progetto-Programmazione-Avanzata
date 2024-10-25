@@ -2,8 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 import { ValidationError } from "sequelize";
 import { z } from 'zod';
 import express from "express";
-import { ErrorMsg } from '../utils/errorFactory';
+import { ErrorMsg, factory } from '../utils/errorFactory';
+import { NextFunction, Request, Response } from 'express'
 
+
+//middleware for error handling
 export const errorMiddleware = (error: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error('errorMiddleware:',error);
 
@@ -31,3 +34,11 @@ export const errorMiddleware = (error: unknown, _req: express.Request, res: expr
     } 
     next(error)
 };
+
+
+//This middleware will be used for catching requests made to non-existent routes
+export const unknownEndpoint = (_req:Request, _res:Response, next:NextFunction) => {
+    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'unknown endpoint')
+    next(error)
+    return
+}

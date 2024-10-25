@@ -1,0 +1,1 @@
+//import { newGameEntry } from "../utils/type"; //req
