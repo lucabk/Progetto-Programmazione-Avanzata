@@ -268,6 +268,7 @@ nota2: per scelte di autore, la repository sarà interamente in italiano, mentre
 - express-async-errors: https://fullstackopen.com/en/part4/testing_the_backend#eliminating-the-try-catch
 - Zod: https://zod.dev/
 - Morgan: https://github.com/expressjs/morgan
+- Rapid-draughts: https://github.com/loks0n/rapid-draughts
 ___________________________________________________________
   
 ## 3 - DOCKERIZZAZIONE
