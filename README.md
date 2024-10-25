@@ -205,14 +205,14 @@ Si aggiunge anche uno script per lanciare il programma in production mode:
 
 
 ### 2.3 Altri pacchetti
-#### 2.3.1 Cors
+#### 2.3.1 rapid-draughts
+Libreria per il gioco della dama.
 ```bash
-npm install cors
-npm install --save-dev @types/cors
+npm install rapid-draughts
 ```
 
 #### 2.3.2 Sequelize
-Si installano i pachetti relativi a Postgres, Sequelize e dotenv (per le variabili di ambiente)
+Si installano i pachetti relativi a Postgres, Sequelize e dotenv (per le variabili di ambiente).
 ```bash
 npm install dotenv pg sequelize
 npm install --save-dev @types/dotenv @types/pg @types/sequelize
