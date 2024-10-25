@@ -6,6 +6,7 @@ import { errorMiddleware } from './middleware/errors_middleware';
 import { unknownEndpoint } from './middleware/unknown_endpoint';
 import morgan from 'morgan';
 import cors from 'cors';
+import loginRouter from './routes/login';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 morgan.token('body', (req: express.Request) => JSON.stringify(req.body))
@@ -18,9 +19,7 @@ app.use(express.json())
 
 
 //routes***********
-app.get('/hello', (_req, res) => {
-    res.status(200).send('Hello!')
-})
+app.use('/api/login', loginRouter) //send token after login
 //routes***********
 
 app.use(unknownEndpoint)

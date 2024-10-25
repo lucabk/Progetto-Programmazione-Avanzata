@@ -25,7 +25,7 @@ export const sequelize = Database.getInstance();
 const runMigrations = async () => {
   const migrator = new Umzug({
     migrations: {
-      glob: '/*.ts',//TODO
+      glob: '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts', //global path
     },
     storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
     context: sequelize.getQueryInterface(),
@@ -42,7 +42,7 @@ const runMigrations = async () => {
 const runSeeds = async () => {
   const seeder = new Umzug({
     migrations: {
-      glob: '/*.ts', //TODO
+      glob: '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts', 
     },
     context: sequelize.getQueryInterface(),
     storage: new SequelizeStorage({ sequelize, tableName: 'seeds' }),
@@ -57,8 +57,8 @@ const runSeeds = async () => {
 export const connectToDatabase = async () => {
     try {
       await sequelize.authenticate()
-      await runMigrations()//TODO*******************************
-      await runSeeds()//TODO*********************************
+      await runMigrations()
+      await runSeeds()
       console.log('connected to the database')
     } catch (err) {
       console.log('failed to connect to the database',err)
