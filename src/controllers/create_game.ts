@@ -1,4 +1,4 @@
-import { newGameEntry } from "../utils/type"; //req
+import { newGameEntry } from "../utils/type";
 import { NextFunction, Request, Response } from 'express';
 import { createGame } from "../game/new_game";
 import { StatusCodes } from "http-status-codes";
@@ -13,18 +13,6 @@ export const createNewGame = async (req: Request<unknown, unknown, newGameEntry>
         const { draughts } = createGame()
 
         //initial game state
-        /*const gameState = {
-            board : draughts.board,
-            engine : {
-                player: draughts.engine.data.player,
-                board: draughts.engine.data.board,
-                store: draughts.engine.data.store,
-            },
-            history : draughts.history,
-            allowedMoves : draughts.moves,
-            currentPlayer : draughts.player,
-            status : draughts.status            
-        }*/
         const gameState = {
             data : draughts.engine.data,
             history: draughts.history
@@ -39,7 +27,7 @@ export const createNewGame = async (req: Request<unknown, unknown, newGameEntry>
             boardObj:gameState
         })
 
-        res.status(StatusCodes.CREATED).json({ message: 'Game created successfully', gameId: game.id})
+        res.status(StatusCodes.CREATED).json({ message: 'Game created successfully', gameId: game.id })
         console.log('New game created!\nBoard:\n',draughts.asciiBoard());
         
         /*console.log('draughts:\n', draughts)

@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../utils/db";
 
-type gameStatus = 'created'|'in_progess'|'won'|'lost'
+export type gameStatus = 'draw'|'in_progess'|'won'|'lost'
 
 interface GameAttributes {
     id?:number
@@ -41,7 +41,7 @@ Game.init(
         status:{
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'created',
+            defaultValue: 'in_progress',
         },
         boardObj:{
             type: DataTypes.JSONB,

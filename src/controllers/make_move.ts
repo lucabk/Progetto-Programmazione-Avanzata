@@ -12,6 +12,9 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveSchema>, res
 
     // AI level
     const difficulty = req.game.aiLevel
+
+    //Game ID
+    const gameId = req.game.id
     
     //state of the game
     const gameState = req.game.boardObj as BoardObjInterface
@@ -22,14 +25,14 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveSchema>, res
 
     try{
         //play the move
-        const result: string|ErrorMsg = await play(difficulty, data, history, origin, destination)
+        const result: string|ErrorMsg = await play(difficulty, data, history, origin, destination, gameId)
         
         //check if the move is allowed
         if(typeof(result) !== 'string'){
             next(result)
             return
         }
-        res.status(StatusCodes.CREATED).send('move executed')
+        res.status(StatusCodes.CREATED).send(result)
 
     }catch(err){
         next(err)
