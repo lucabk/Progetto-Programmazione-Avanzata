@@ -10,13 +10,20 @@ import { ErrorMsg, factory } from '../utils/errorFactory';
 import { StatusCodes } from 'http-status-codes';
 import Game, { gameStatus } from '../models/game';
 import { BoardObjInterface } from '../utils/type';
+import { User } from '../models';
+
+
+//Define the cost of a single move in tokens
+const TOKEN_MOVE_COST:number = 0.0125 
 
 export const play = async (
     difficulty:number, 
     data:Partial<DraughtsEngineData<number, EnglishDraughtsEngineStore>>, 
     history:Partial<DraughtsGameHistory1D>, 
     origin:number, destination:number,
-    gameId:number):Promise<string | ErrorMsg> => {
+    gameId:number,
+    userId:number
+        ):Promise<string | ErrorMsg> => {
 
     // Initialise the game
     const draughts = Draughts.setup(data, history);
@@ -50,6 +57,9 @@ export const play = async (
         /*After making a move, the draughts object will update the board, the current player, and the game status. 
         It will also add the move to the game history. Keep in mind that the move() method does not validate if the 
         move is legal. An error will be thrown if an illegal move is passed in.*/
+
+        // subtract tokens for each user's move
+        await subtractTokens(userId)
 
         console.log(`\n\nBoard Status after user's move:\n${draughts.asciiBoard()}`);
         
@@ -114,6 +124,7 @@ const updateDb = async (newGameState:BoardObjInterface, gameId:number) => {
     )
 }
 
+
 //Update the game status in the database a the end
 const updateDbEndGame = async (status:gameStatus, gameId:number) => {
     await Game.update(
@@ -125,4 +136,10 @@ const updateDbEndGame = async (status:gameStatus, gameId:number) => {
         },
     )
     return status
+}
+
+
+//Subtract tokens for each user's move
+const subtractTokens = async (userId:number) => {
+    await User.decrement({ tokens: TOKEN_MOVE_COST }, { where: { id: userId }})
 }
