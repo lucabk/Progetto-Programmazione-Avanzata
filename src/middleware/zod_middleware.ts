@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { newUserSchema, newGameSchema } from '../utils/type';
+import { newUserSchema, newGameSchema, newMoveSchema } from '../utils/type';
 
 //login middleware zod validation
 export const userLoginParser = (req:Request, _res:Response, next:NextFunction) => {
@@ -12,5 +12,12 @@ export const userLoginParser = (req:Request, _res:Response, next:NextFunction) =
 export const createGameParser = (req:Request, _res:Response, next:NextFunction) => {
     console.log('createGameParser')
     newGameSchema.parse(req.body)
+    next()
+}
+
+//make a move middleware zod validation
+export const makeMoveParser = (req:Request, _res:Response, next:NextFunction) => {
+    console.log('makeMoveParser')
+    newMoveSchema.parse(req.body)
     next()
 }

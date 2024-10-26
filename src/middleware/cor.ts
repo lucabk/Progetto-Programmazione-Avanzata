@@ -8,3 +8,11 @@ export const createGame = [
     authMiddleware.getUserById,
     authMiddleware.checkMinAmntToken
 ]
+
+export const makeMove = [
+    authMiddleware.tokenExtractor,
+    zodValidation.makeMoveParser,
+    authMiddleware.getUserById,
+    authMiddleware.checkGameById,
+    authMiddleware.checkUserOfTheGame
+]

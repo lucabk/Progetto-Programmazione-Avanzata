@@ -3,8 +3,9 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import { KEY } from '../utils/config'
 import { StatusCodes } from 'http-status-codes'
 import { factory, ErrorMsg } from '../utils/errorFactory'
-import { User } from '../models'
+import { Game, User } from '../models'
 import { MIN_TOKEN } from '../models'
+import { newMoveSchema } from '../utils/type'
 
 
 //This middleware extracts the token from the Authorization header, decodes it, and attaches the decoded token to the request object
@@ -53,7 +54,7 @@ export const getUserById = async (req: express.Request, _res: express.Response, 
     next(error)
     return
   }
-  req.user = user // Attach user to request object
+  req.user = user //Attach user to request object
   next()
 }
 
@@ -68,4 +69,32 @@ export const checkMinAmntToken = async (req: express.Request, _res: express.Resp
     const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'insufficient tokens to start a new game')
     next(error)
   }
+}
+
+//This middleware checks if a game with the given id exists and attaches the game object to the request object
+export const checkGameById = async (req: express.Request<unknown, unknown, newMoveSchema>, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkGameById')
+  const gameId:number = req.body.gameId
+
+  const game = await Game.findByPk(gameId)
+  if(!game){
+    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'game not fond')
+    next(error)
+    return
+  }
+  req.game = game //Attach game to request object
+  next()
+}
+
+
+//This middleware checks if the user making the move is the user who created the game
+export const checkUserOfTheGame = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  const userJWT:number = req.user.id
+  const userOfTheGame:number = req.game.userId
+  if(userJWT !== userOfTheGame){
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'you are not the user of the game')
+    next(error)
+    return
+  }
+  next()
 }
