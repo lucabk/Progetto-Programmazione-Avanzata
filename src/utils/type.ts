@@ -13,7 +13,7 @@ export type newUserEntry = z.infer< typeof newUserSchema > //new type
 
 //create game validation
 export const newGameSchema = z.object({
-    //contro IA
-    difficulty: z.number().nonnegative().max(10).int()        //max alpha-beta depth
+    //against AI
+    difficulty: z.number().nonnegative().max(10).int()        //alpha-beta max depth
 })
 export type newGameEntry = z.infer< typeof newGameSchema >

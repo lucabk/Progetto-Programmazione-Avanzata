@@ -1,6 +1,13 @@
 import User, { MIN_TOKEN } from "./users";
+import Game from "./game";
+
+//One-To-Many relationships
+User.hasMany(Game)
+Game.belongsTo(User)
 
 export {
-    MIN_TOKEN,
-    User
+    User,
+    Game,
+
+    MIN_TOKEN
 }
