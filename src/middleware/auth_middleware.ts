@@ -5,8 +5,8 @@ import { StatusCodes } from 'http-status-codes'
 import { factory, ErrorMsg } from '../utils/errorFactory'
 import { Game, User } from '../models'
 import { MIN_TOKEN } from '../models'
-import { newMoveSchema } from '../utils/type'
-
+import { newMoveEntry } from '../utils/type'
+import { newRefillEntry } from '../utils/type'
 
 //This middleware extracts the token from the Authorization header, decodes it, and attaches the decoded token to the request object
 export const tokenExtractor = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
@@ -72,7 +72,7 @@ export const checkMinAmntToken = async (req: express.Request, _res: express.Resp
 }
 
 //This middleware checks if a game with the given id exists and attaches the game object to the request object
-export const checkGameById = async (req: express.Request<unknown, unknown, newMoveSchema>, _res: express.Response, next: express.NextFunction) => {
+export const checkGameById = async (req: express.Request<unknown, unknown, newMoveEntry>, _res: express.Response, next: express.NextFunction) => {
   console.log('checkGameById')
   const gameId:number = req.body.gameId
 
@@ -134,5 +134,34 @@ export const checkRemainingTokens = (req: express.Request, _res: express.Respons
     next(error)
     return
   }
+  next()
+}
+
+
+//check if the user has admin role
+export const isAdmin = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('isAdmin')
+  if(!req.user.isAdmin){
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'current user is not an admin')
+    next(error)
+    return
+  }
+  next()
+}
+
+
+//check if the user to refill exists
+export const userToRefill = async (req: express.Request<unknown, unknown, newRefillEntry>, _res: express.Response, next: express.NextFunction) => {
+  console.log('userToRefill')
+  //username to refill
+  const { username } = req.body
+  //query db
+  const usernameToRefill = await User.findOne({ where: {username}})
+  if(!usernameToRefill){
+    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'user to refill not found')
+    next(error)
+    return
+  }
+
   next()
 }

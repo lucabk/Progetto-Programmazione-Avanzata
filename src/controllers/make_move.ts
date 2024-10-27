@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { newMoveSchema } from "../utils/type";
+import { newMoveEntry } from "../utils/type";
 import { StatusCodes } from 'http-status-codes';
 import { BoardObjInterface } from '../utils/type';
 import { play } from '../game/play';
 import { ErrorMsg } from '../utils/errorFactory';
 
-export const makeMove = async (req:Request<unknown, unknown, newMoveSchema>, res:Response, next:NextFunction) => {
+export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:Response, next:NextFunction) => {
   
     //move data
     const { origin, destination } = req.body

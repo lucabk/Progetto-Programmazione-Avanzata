@@ -26,3 +26,11 @@ export const getHistory = [
 ]
 
 export const getStatus = getHistory
+
+export const refill = [
+    authMiddleware.tokenExtractor,
+    zodValidation.refillParser,
+    authMiddleware.getUserById,
+    authMiddleware.isAdmin,
+    authMiddleware.userToRefill
+]
