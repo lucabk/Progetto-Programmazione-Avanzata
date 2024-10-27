@@ -66,22 +66,34 @@ export const play = async (
 
         console.log(`\n\nBoard Status after user's move:\n${draughts.asciiBoard()}`);
         
+        // if game is over after user's move exit while loop (WIN or TIE)
+        if(draughts.status !== DraughtsStatus.PLAYING){
+            break
+        }
 
-        //Check if the game continues and if it's the AI's turn
-        if (draughts.status === DraughtsStatus.PLAYING && draughts.player === DraughtsPlayer.LIGHT) {
+        //Check if it's the AI's turn
+        if (draughts.player === DraughtsPlayer.LIGHT) {
             //Get the computer's move        
             const computerMove  = await ai(draughts)
             //If the computer has a move, execute it
             if (computerMove) {
-                draughts.move(computerMove);
-                console.log('AI moved...\n');
+                draughts.move(computerMove); //After making a move, the draughts object will update the board, the current player, and the game status. It will also add the move to the game history. 
+                console.log('AI turn...\n');
                 console.log(`\n\nBoard Status after AI's move:\n${draughts.asciiBoard()}`)
+
+                //Computer won 
+                if(draughts.status !== DraughtsStatus.PLAYING && draughts.status === DraughtsStatus.LIGHT_WON){
+                    const newGameState = {
+                        data : draughts.engine.data,
+                        history: draughts.history
+                    }
+                    return updateDbEndGame('lost', gameId, newGameState)
+                }
+                //draw
+                else if (draughts.status !== DraughtsStatus.PLAYING && draughts.status === DraughtsStatus.DRAW) 
+                    break
             }
         }
-
-        //game finished
-        else
-            break
 
         //update db
         const newGameState = {
@@ -94,17 +106,9 @@ export const play = async (
         return draughts.asciiBoard()
     }
 
-    //Computer won
-    if(draughts.status === DraughtsStatus.LIGHT_WON){
-        const newGameState = {
-            data : draughts.engine.data,
-            history: draughts.history
-        }
-        return updateDbEndGame('lost', gameId, newGameState)
-    }
 
     //User won
-    else if(draughts.status === DraughtsStatus.DARK_WON){
+    if(draughts.status === DraughtsStatus.DARK_WON){
         await addTokens(userId)
 
         const newGameState = {
