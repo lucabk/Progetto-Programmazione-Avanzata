@@ -44,13 +44,14 @@ export const play = async (
         const { moves } = draughts;
         console.log('available moves:\n', moves)
 
-        console.log('origin: ', origin,' ; destination:', destination)
+        console.log('Your move: -origin: ', origin,' ; -destination:', destination)
 
         //check if the move is allowed
         const allowedMove = moves.find(move => move.origin === origin && move.destination === destination)
         if(!allowedMove){
+            const showAllowedMoves = moves.map(move => `(${move.origin},${move.destination})`).join(', ')
             console.error('move not allowed!')
-            const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'move not allowed!')
+            const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, `move not allowed! Allowed moves (origin,destination): ${showAllowedMoves}`)
             return error
         }
 

@@ -21,8 +21,8 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveSchema>, res
     const gameState = req.game.boardObj as BoardObjInterface
     const { data, history } = gameState
     
-    console.log('data:\n',data)
-    console.log('history:\n', history)
+    //console.log('data:\n',data)
+    //console.log('history:\n', history)
 
     try{
         //play the move
