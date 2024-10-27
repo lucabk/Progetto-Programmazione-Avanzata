@@ -104,7 +104,7 @@ export const play = async (
     }
 
     //User won
-    if(draughts.status === DraughtsStatus.DARK_WON){
+    else if(draughts.status === DraughtsStatus.DARK_WON){
         await addTokens(userId)
 
         const newGameState = {
