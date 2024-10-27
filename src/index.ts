@@ -8,6 +8,7 @@ import cors from 'cors';
 import loginRouter from './routes/login';
 import createGameRouter from './routes/create_game';
 import makeMoveRouter from './routes/make_a_move';
+import showStatisticsRouter from './routes/game_statistics';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 morgan.token('body', (req: express.Request) => JSON.stringify(req.body))
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use('/api/login', loginRouter) //send token after login
 app.use('/api/creategame', createGameRouter) //create new game
 app.use('/api/makemove', makeMoveRouter) //make a move
+app.use('/api/game', showStatisticsRouter) //shows history and game status
 //routes***********
 
 app.use(unknownEndpoint)

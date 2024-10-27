@@ -78,7 +78,7 @@ export const checkGameById = async (req: express.Request<unknown, unknown, newMo
 
   const game = await Game.findByPk(gameId)
   if(!game){
-    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'game not fond')
+    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'game not found')
     next(error)
     return
   }
@@ -89,6 +89,7 @@ export const checkGameById = async (req: express.Request<unknown, unknown, newMo
 
 //This middleware checks if the user making the move is the user who created the game
 export const checkUserOfTheGame = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkUserOfTheGame')
   const userJWT:number = req.user.id
   const userOfTheGame:number = req.game.userId
   if(userJWT !== userOfTheGame){
@@ -96,5 +97,29 @@ export const checkUserOfTheGame = (req: express.Request, _res: express.Response,
     next(error)
     return
   }
+  next()
+}
+
+
+//This middleware checks if the game the user is looking for exists
+export const getGameById = async (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('getGameById')
+  //retrieve game id
+  const id:number = parseInt(req.params.id,10)
+  if (isNaN(id) || !Number.isInteger(id)){
+    const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'Invalid ID format. ID must be a number.')
+    next(error)
+    return
+  }
+
+  //search game by id
+  const game = await Game.findByPk(id)
+  if(!game){
+    const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'game not found')
+    next(error)
+    return
+  }
+  req.game = game 
+
   next()
 }

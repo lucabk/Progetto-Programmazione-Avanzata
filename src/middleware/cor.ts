@@ -16,3 +16,10 @@ export const makeMove = [
     authMiddleware.checkGameById,
     authMiddleware.checkUserOfTheGame
 ]
+
+export const history = [
+    authMiddleware.tokenExtractor,
+    authMiddleware.getUserById,
+    authMiddleware.getGameById,
+    authMiddleware.checkUserOfTheGame
+]
