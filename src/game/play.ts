@@ -15,6 +15,8 @@ import { User } from '../models';
 
 //Define the cost of a single move in tokens
 const TOKEN_MOVE_COST:number = 0.0125 
+//Define the points earned after a victory
+const POINTS_AFTER_WIN:number = 1
 
 export const play = async (
     difficulty:number, 
@@ -76,6 +78,10 @@ export const play = async (
             }
         }
 
+        //game finished
+        else
+            break
+
         //update db
         const newGameState = {
             data : draughts.engine.data,
@@ -89,17 +95,31 @@ export const play = async (
 
     //Computer won
     if(draughts.status === DraughtsStatus.LIGHT_WON){
-        return updateDbEndGame('lost', gameId)
+        const newGameState = {
+            data : draughts.engine.data,
+            history: draughts.history
+        }
+        return updateDbEndGame('lost', gameId, newGameState)
     }
 
     //User won
     if(draughts.status === DraughtsStatus.DARK_WON){
-        return updateDbEndGame('won', gameId)
+        await addTokens(userId)
+
+        const newGameState = {
+            data : draughts.engine.data,
+            history: draughts.history
+        }
+        return updateDbEndGame('won', gameId, newGameState)
     }
 
     //Tie
     else{
-        return updateDbEndGame('draw', gameId)
+        const newGameState = {
+            data : draughts.engine.data,
+            history: draughts.history
+        }
+        return updateDbEndGame('draw', gameId, newGameState)
     }
 
     
@@ -126,9 +146,9 @@ const updateDb = async (newGameState:BoardObjInterface, gameId:number) => {
 
 
 //Update the game status in the database a the end
-const updateDbEndGame = async (status:gameStatus, gameId:number) => {
+const updateDbEndGame = async (status:gameStatus, gameId:number, newGameState:BoardObjInterface) => {
     await Game.update(
-        { status },
+        { status, boardObj:newGameState },
         {
             where: {
                 id:gameId
@@ -142,4 +162,10 @@ const updateDbEndGame = async (status:gameStatus, gameId:number) => {
 //Subtract tokens for each user's move
 const subtractTokens = async (userId:number) => {
     await User.decrement({ tokens: TOKEN_MOVE_COST }, { where: { id: userId }})
+}
+
+
+//Add token for victory
+const addTokens = async (userId:number) => {
+    await User.increment({ points: POINTS_AFTER_WIN },  { where: { id: userId }})
 }

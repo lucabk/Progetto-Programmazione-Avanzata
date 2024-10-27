@@ -9,6 +9,7 @@ interface UserAttributes {
     username:string
     password:string
     tokens:number
+    points:number
     isAdmin:boolean
 }
 
@@ -17,6 +18,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public username!: string;
     public password!: string;
     public tokens!: number;
+    public points!: number;
     public isAdmin!: boolean;
 }
 
@@ -43,6 +45,10 @@ User.init(
         tokens:{
             type: DataTypes.FLOAT,
             defaultValue:MIN_TOKEN  // allowNull defaults to true
+        },
+        points:{
+            type: DataTypes.FLOAT,
+            defaultValue: 0
         },
         isAdmin:{
             type: DataTypes.BOOLEAN,
