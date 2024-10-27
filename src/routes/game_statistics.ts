@@ -4,12 +4,12 @@ import * as getHistotyController from '../controllers/get_history'
 
 const showStatisticsRouter = express.Router()
 
-//history
+//get history
 showStatisticsRouter.get('/history/:id',
-    middlewareCor.history,
+    middlewareCor.getHistory,
     getHistotyController.getHistory
 )
 
-//status
+//get game status
 
 export default showStatisticsRouter

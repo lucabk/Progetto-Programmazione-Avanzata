@@ -123,3 +123,16 @@ export const getGameById = async (req: express.Request, _res: express.Response, 
 
   next()
 }
+
+
+//This middleware checks if the user has tokens to do any request
+export const checkRemainingTokens = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkRemainingTokens')
+  //check tokens of the user
+  if(req.user.tokens<=0){
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, `terminated tokens for the user ${req.user.username}`)
+    next(error)
+    return
+  }
+  next()
+}
