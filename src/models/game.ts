@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../utils/db";
 
-export type gameStatus = 'draw'|'in_progess'|'won'|'lost'
+export type gameStatus = 'draw'|'in_progess'|'won'|'lost'|'quitted'
 
 interface GameAttributes {
     id?:number

@@ -24,3 +24,5 @@ export const getHistory = [
     authMiddleware.getGameById,
     authMiddleware.checkUserOfTheGame
 ]
+
+export const getStatus = getHistory
