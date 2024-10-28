@@ -142,7 +142,7 @@ export const checkRemainingTokens = (req: express.Request, _res: express.Respons
 export const isAdmin = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
   console.log('isAdmin')
   if(!req.user.isAdmin){
-    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'current user is not an admin')
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'only a user with admin privileges may reload tokens')
     next(error)
     return
   }
@@ -162,6 +162,5 @@ export const userToRefill = async (req: express.Request<unknown, unknown, newRef
     next(error)
     return
   }
-
   next()
 }

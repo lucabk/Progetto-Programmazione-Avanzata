@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import loginRouter from './routes/login';
 import createGameRouter from './routes/create_game';
-import makeMoveRouter from './routes/make_a_move';
+import makeMoveRouter from './routes/make_move';
 import showStatisticsRouter from './routes/game_statistics';
 import refillRouter from './routes/refill_tokens';
 
