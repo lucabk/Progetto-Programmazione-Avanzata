@@ -66,7 +66,7 @@ export const checkMinAmntToken = async (req: express.Request, _res: express.Resp
     await User.decrement({ tokens: MIN_TOKEN }, { where: { id: req.user.id }}) //decrement tokens
     next()
   }else{
-    const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'insufficient tokens to start a new game')
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'insufficient tokens to start a new game')
     next(error)
   }
 }
@@ -186,6 +186,28 @@ export const checkStillPlaying = (req: express.Request, _res: express.Response, 
     const error:ErrorMsg = factory.getError(
         StatusCodes.BAD_REQUEST, 
         `You cannot play; the game has already ended with status: ${req.game.status}.`
+    )
+    next(error)
+    return
+  }
+  next()
+}
+
+
+//This middleware checks that a user can only play one game at a time 
+export const checkOneGameAtTime = async (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkOneGameAtTime')
+  const userId = req.user.id
+  const game = await Game.findOne({ 
+    where: {
+      userId,
+      status : GameStatus.IN_PROGRESS
+    },
+  })
+  if(game){
+    const error:ErrorMsg = factory.getError(
+      StatusCodes.BAD_REQUEST, 
+      `user can only play one game at a time; you're playing game with id: ${game.id}`
     )
     next(error)
     return

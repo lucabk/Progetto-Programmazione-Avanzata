@@ -6,6 +6,7 @@ export const createGame = [
     authMiddleware.tokenExtractor,
     zodValidation.createGameParser,
     authMiddleware.getUserById,
+    authMiddleware.checkOneGameAtTime,
     authMiddleware.checkMinAmntToken
 ]
 
