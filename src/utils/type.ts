@@ -4,7 +4,15 @@ import { DraughtsEngineData } from 'rapid-draughts/dist/core/engine';
 import { EnglishDraughtsEngineStore } from 'rapid-draughts/dist/english/engine';
 import { DraughtsGameHistory1D } from 'rapid-draughts/dist/core/game';
 
+//Define the cost of a single move in tokens
+export const TOKEN_MOVE_COST:number = 0.0125 
+//Define the points earned after a victory
+export const POINTS_AFTER_WIN:number = 1
+//Defines the points lost after the abandonment of a game
+export const POINTS_QUIT_PENALTY:number = 0.5
 
+
+/************************************** */
 //login user validation
 export const newUserSchema = z.object({
     username: z.string().email().min(1).max(255), //DataTypes.STRING=== VARCHAR(255)
@@ -36,7 +44,14 @@ export const newRefillSchema = z.object({
     username: z.string().email().min(1).max(255),
     tokens: z.number().nonnegative()
 })
-export type newRefillEntry = z.infer< typeof newRefillSchema>
+export type newRefillEntry = z.infer< typeof newRefillSchema >
+
+
+//quit game validation
+export const newQuitSchema = z.object({
+    gameId: z.number().nonnegative().int()
+})
+export type newQuitEntry =z.infer< typeof newQuitSchema >
 
 
 //boardObj interface

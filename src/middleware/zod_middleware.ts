@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { newUserSchema, newGameSchema, newMoveSchema, newRefillSchema } from '../utils/type';
+import { newUserSchema, newGameSchema, newMoveSchema, newRefillSchema, newQuitSchema } from '../utils/type';
 
 //login middleware zod validation
 export const userLoginParser = (req:Request, _res:Response, next:NextFunction) => {
@@ -22,9 +22,16 @@ export const makeMoveParser = (req:Request, _res:Response, next:NextFunction) =>
     next()
 }
 
-//tokens refill validation
+//tokens refill middleware zod validation
 export const refillParser = (req:Request, _res:Response, next:NextFunction) => {
     console.log('refillParser')
     newRefillSchema.parse(req.body)
+    next()
+}
+
+//quit game middleware zod validation
+export const quitParser = (req:Request, _res:Response, next:NextFunction) => {
+    console.log('quitParser')
+    newQuitSchema.parse(req.body)
     next()
 }

@@ -11,12 +11,8 @@ import { StatusCodes } from 'http-status-codes';
 import Game, { gameStatus } from '../models/game';
 import { BoardObjInterface } from '../utils/type';
 import { User } from '../models';
+import { TOKEN_MOVE_COST, POINTS_AFTER_WIN  } from '../utils/type';
 
-
-//Define the cost of a single move in tokens
-const TOKEN_MOVE_COST:number = 0.0125 
-//Define the points earned after a victory
-const POINTS_AFTER_WIN:number = 1
 
 export const play = async (
     difficulty:number, 

@@ -34,3 +34,12 @@ export const refill = [
     authMiddleware.isAdmin,
     authMiddleware.userToRefill
 ]
+
+export const quitGame = [
+    authMiddleware.tokenExtractor,
+    zodValidation.quitParser,
+    authMiddleware.getUserById,
+    authMiddleware.checkRemainingTokens,
+    authMiddleware.checkGameById,
+    authMiddleware.checkUserOfTheGame
+]

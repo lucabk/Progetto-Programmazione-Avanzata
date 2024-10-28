@@ -13,5 +13,5 @@ export const refill = async (req:Request<unknown, unknown, newRefillEntry>, res:
         where: {username },
         attributes: ['username', 'tokens'] 
     })
-    res.status(StatusCodes.NO_CONTENT).json({ 'user updated': userUpdate })
+    res.status(StatusCodes.OK).json({ 'user updated': userUpdate })
 }
