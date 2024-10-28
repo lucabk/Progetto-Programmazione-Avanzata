@@ -8,10 +8,11 @@ import { EnglishDraughtsEngineStore } from 'rapid-draughts/dist/english/engine';
 import { DraughtsGameHistory1D } from 'rapid-draughts/dist/core/game';
 import { ErrorMsg, factory } from '../utils/errorFactory';
 import { StatusCodes } from 'http-status-codes';
-import Game, { gameStatus } from '../models/game';
+import Game from '../models/game';
 import { BoardObjInterface } from '../utils/type';
 import { User } from '../models';
 import { TOKEN_MOVE_COST, POINTS_AFTER_WIN  } from '../utils/type';
+import { GameStatus } from '../utils/type';
 
 
 export const play = async (
@@ -83,7 +84,7 @@ export const play = async (
                         data : draughts.engine.data,
                         history: draughts.history
                     }
-                    return updateDbEndGame('lost', gameId, newGameState)
+                    return updateDbEndGame(GameStatus.LOST, gameId, newGameState)
                 }
                 //draw
                 else if (draughts.status !== DraughtsStatus.PLAYING && draughts.status === DraughtsStatus.DRAW) 
@@ -111,7 +112,7 @@ export const play = async (
             data : draughts.engine.data,
             history: draughts.history
         }
-        return updateDbEndGame('won', gameId, newGameState)
+        return updateDbEndGame(GameStatus.WON, gameId, newGameState)
     }
 
     //Tie
@@ -120,7 +121,7 @@ export const play = async (
             data : draughts.engine.data,
             history: draughts.history
         }
-        return updateDbEndGame('draw', gameId, newGameState)
+        return updateDbEndGame(GameStatus.DRAW, gameId, newGameState)
     }
 
     
@@ -147,7 +148,7 @@ const updateDb = async (newGameState:BoardObjInterface, gameId:number) => {
 
 
 //Update the game status in the database a the end
-const updateDbEndGame = async (status:gameStatus, gameId:number, newGameState:BoardObjInterface) => {
+const updateDbEndGame = async (status:GameStatus, gameId:number, newGameState:BoardObjInterface) => {
     await Game.update(
         { status, boardObj:newGameState },
         {

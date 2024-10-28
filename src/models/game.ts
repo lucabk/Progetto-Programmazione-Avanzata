@@ -1,13 +1,12 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../utils/db";
-
-export type gameStatus = 'draw'|'in_progess'|'won'|'lost'|'quitted'
+import { GameStatus } from "../utils/type";
 
 interface GameAttributes {
     id?:number
     userId:number
     aiLevel:number
-    status?:gameStatus
+    status?:GameStatus
     boardObj:object
 }
 
@@ -15,7 +14,7 @@ class Game extends Model<GameAttributes> implements GameAttributes{
     public id!:number
     public userId!:number
     public aiLevel!:number
-    public status!:gameStatus
+    public status!:GameStatus
     public boardObj!:object
 }
 
@@ -41,7 +40,7 @@ Game.init(
         status:{
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'in_progress',
+            defaultValue: GameStatus.IN_PROGRESS,
         },
         boardObj:{
             type: DataTypes.JSONB,

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { gameStatus } from '../models/game';
+import { GameStatus } from '../utils/type';
 
 export const getStatus = (req:Request, res:Response) => {
-    const status:gameStatus = req.game.status
+    const status:GameStatus = req.game.status
 
     console.log('Game status: ',status)
     res.json(status)

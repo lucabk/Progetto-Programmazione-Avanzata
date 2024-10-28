@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
 import { newQuitEntry } from '../utils/type';
-import Game, { gameStatus } from '../models/game';
+import Game from '../models/game';
 import { POINTS_QUIT_PENALTY } from '../utils/type';
 import { User } from '../models';
 import { StatusCodes } from 'http-status-codes';
+import { GameStatus } from '../utils/type';
 
 
 export const quitGame = async (req:Request<unknown, unknown, newQuitEntry>, res:Response) => {
 
     //update game status ('games' table)
-    const newGameStatus:gameStatus = 'quitted'
+    const newGameStatus = GameStatus.QUITTED
     const gameId:number = req.body.gameId
     
     //***********TODO**********: update draughts.status = DraughtsStatus.LIGHT_WON

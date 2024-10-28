@@ -11,6 +11,14 @@ export const POINTS_AFTER_WIN:number = 1
 //Defines the points lost after the abandonment of a game
 export const POINTS_QUIT_PENALTY:number = 0.5
 
+//game status 
+export enum GameStatus {
+    QUITTED = 'quitted',
+    IN_PROGRESS = 'in_progess',
+    WON = 'won',
+    LOST = 'lost',
+    DRAW = 'draw',
+}
 
 /************************************** */
 //login user validation
