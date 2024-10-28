@@ -14,7 +14,7 @@ export const POINTS_QUIT_PENALTY:number = 0.5
 //game status 
 export enum GameStatus {
     QUITTED = 'quitted',
-    IN_PROGRESS = 'in_progess',
+    IN_PROGRESS = 'in_progress',
     WON = 'won',
     LOST = 'lost',
     DRAW = 'draw',

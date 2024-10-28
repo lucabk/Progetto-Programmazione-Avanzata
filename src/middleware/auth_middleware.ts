@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes'
 import { factory, ErrorMsg } from '../utils/errorFactory'
 import { Game, User } from '../models'
 import { MIN_TOKEN } from '../models'
-import { newMoveEntry, newQuitEntry } from '../utils/type'
+import { GameStatus, newMoveEntry, newQuitEntry } from '../utils/type'
 import { newRefillEntry } from '../utils/type'
 
 //This middleware extracts the token from the Authorization header, decodes it, and attaches the decoded token to the request object
@@ -138,7 +138,7 @@ export const checkRemainingTokens = (req: express.Request, _res: express.Respons
 }
 
 
-//check if the user has admin role
+//This middleware checks if the user has admin role
 export const isAdmin = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
   console.log('isAdmin')
   if(!req.user.isAdmin){
@@ -150,7 +150,7 @@ export const isAdmin = (req: express.Request, _res: express.Response, next: expr
 }
 
 
-//check if the user to refill exists
+//This middleware checks if the user to refill exists
 export const userToRefill = async (req: express.Request<unknown, unknown, newRefillEntry>, _res: express.Response, next: express.NextFunction) => {
   console.log('userToRefill')
   //username to refill
@@ -159,6 +159,34 @@ export const userToRefill = async (req: express.Request<unknown, unknown, newRef
   const usernameToRefill = await User.findOne({ where: {username}})
   if(!usernameToRefill){
     const error:ErrorMsg = factory.getError(StatusCodes.NOT_FOUND, 'user to refill not found')
+    next(error)
+    return
+  }
+  next()
+}
+
+
+//This middleware checks if the user has already quitted
+export const checkAlreadyQuitted =  (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkAlreadyQuitted')
+  if(req.game.status === GameStatus.QUITTED){
+    const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'Game already quitted!')
+    next(error)
+    return
+  }
+  next()
+}
+
+
+//This middleware checks if the game is still in progress
+export const checkStillPlaying = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+  console.log('checkStillPlaying')
+  const stillPlaying:boolean = req.game.status === GameStatus.IN_PROGRESS //? true : false
+  if(!stillPlaying){
+    const error:ErrorMsg = factory.getError(
+        StatusCodes.BAD_REQUEST, 
+        `You cannot play; the game has already ended with status: ${req.game.status}.`
+    )
     next(error)
     return
   }

@@ -14,7 +14,8 @@ export const makeMove = [
     zodValidation.makeMoveParser,
     authMiddleware.getUserById,
     authMiddleware.checkGameById,
-    authMiddleware.checkUserOfTheGame
+    authMiddleware.checkUserOfTheGame,
+    authMiddleware.checkStillPlaying
 ]
 
 export const getHistory = [
@@ -41,5 +42,6 @@ export const quitGame = [
     authMiddleware.getUserById,
     authMiddleware.checkRemainingTokens,
     authMiddleware.checkGameById,
-    authMiddleware.checkUserOfTheGame
+    authMiddleware.checkUserOfTheGame,
+    authMiddleware.checkAlreadyQuitted
 ]

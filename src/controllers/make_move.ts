@@ -25,7 +25,7 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
     //console.log('history:\n', history)
 
     try{
-        //play the move
+        //play the move (difficulty, gameState, move, game ad user Ids)
         const result: string|ErrorMsg = await play(difficulty, data, history, origin, destination, gameId, userId)
         
         //check if the move is allowed
