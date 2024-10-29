@@ -2,7 +2,8 @@ import { newGameEntry } from "../utils/type";
 import { NextFunction, Request, Response } from 'express';
 import { createGame } from "../game/new_game";
 import { StatusCodes } from "http-status-codes";
-import { Game } from "../models";
+import { createNewGameDb } from "../game/helper_fun";
+
 
 export const createNewGame = async (req: Request<unknown, unknown, newGameEntry>, res:Response, next:NextFunction) => {
     try{
@@ -21,11 +22,7 @@ export const createNewGame = async (req: Request<unknown, unknown, newGameEntry>
         console.log('gameState:\n',gameState)
 
         //save game in db
-        const game = await Game.create({
-            userId:id,
-            aiLevel:difficulty,
-            boardObj:gameState
-        })
+        const game = await createNewGameDb(id, difficulty, gameState)
 
         res.status(StatusCodes.CREATED).json({ message: 'Game created successfully', gameId: game.id })
         console.log('New game created!\nBoard:\n',draughts.asciiBoard());

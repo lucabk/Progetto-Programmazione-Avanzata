@@ -43,3 +43,14 @@ export const subtractTokens = async (userId:number) => {
 export const addTokens = async (userId:number) => {
     await User.increment({ points: POINTS_AFTER_WIN },  { where: { id: userId }})
 }
+
+
+//Save new game in the db
+export const createNewGameDb = async (id:number, difficulty:number, gameState:BoardObjInterface):Promise<Game> => {
+    const game = await Game.create({
+        userId:id,
+        aiLevel:difficulty,
+        boardObj:gameState
+    })
+    return game
+}

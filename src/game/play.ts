@@ -9,7 +9,7 @@ import { DraughtsGameHistory1D } from 'rapid-draughts/dist/core/game';
 import { ErrorMsg, factory } from '../utils/errorFactory';
 import { StatusCodes } from 'http-status-codes';
 import { GameStatus } from '../utils/type';
-import { updateDb, updateDbEndGame, subtractTokens, addTokens } from './helper_fun_play';
+import { updateDb, updateDbEndGame, subtractTokens, addTokens } from './helper_fun';
 
 export const play = async (
     difficulty:number, 
