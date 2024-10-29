@@ -22,7 +22,7 @@ module.exports = {
           username: 'user2@example.com',
           password: await bcrypt.hash('password2', 10),
           tokens: 0.45,
-          points: 0,
+          points: 1,
           isAdmin:false,
           createdAt: new Date(),
           updatedAt: new Date(),
