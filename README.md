@@ -375,14 +375,113 @@ graph TD;
 
 ## 4 - STRUTTURA DEL PROGETTO
 ### 4.1 Disposizione delle diretory
+Il progetto prevede la seguente struttura delle directory all'interno dell cartella principale <i>/src</i> che contiene il codice dell'applicazione:
+
+```bash
+src
+├── controllers
+│   ├── create_game.ts
+│   ├── get_history.ts
+│   ├── get_status.ts
+│   ├── make_move.ts
+│   ├── quit_game.ts
+│   └── refill_tokens.ts
+├── game
+│   ├── helper_fun.ts
+│   ├── new_game.ts
+│   └── play.ts
+├── index.ts
+├── middleware
+│   ├── auth_middleware.ts
+│   ├── cor.ts
+│   ├── errors_middleware.ts
+│   └── zod_middleware.ts
+├── migrations
+│   ├── 25102024_00migration.ts
+│   ├── 26102024_01migration.ts
+│   └── 27102024_02migration.ts
+├── models
+│   ├── game.ts
+│   ├── index.ts
+│   └── users.ts
+├── routes
+│   ├── create_game.ts
+│   ├── game_statistics.ts
+│   ├── login.ts
+│   ├── make_move.ts
+│   ├── quit_game.ts
+│   └── refill_tokens.ts
+├── saved_games
+│   ├── game_data_drawn.JSON
+│   ├── game_data_losing.JSON
+│   ├── game_data_winning.JSON
+│   └── game_data_won.JSON
+├── seeds
+│   ├── initialSeed.ts
+│   └── secondSeed.ts
+├── types
+│   └── express
+│       └── index.d.ts
+└── utils
+    ├── config.ts
+    ├── db.ts
+    ├── errorFactory.ts
+    └── type.ts
+```
+
 
 #### 4.2 PostgreSQL
 ##### 4.2.1 Migration and Seed
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
 Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato.
+Di seguito è riportata la tabella relativa le migrazioni.
+
+![image](https://github.com/user-attachments/assets/4fb2179d-f54c-4d44-94fa-6ab0f3dadb8f)
+
 
 ##### 4.2.2 Adminer
 Come accennato nella sezione relativa a Docker, è stato utilizzato un tool per il management del database, Adminer. Questa scelta implementativa è dovuta sia alla necessità di avere a disposizione una rapida visualizzazione dei dati in Postgres durante lo sviluppo ed i test, sia per avere una interfaccia grafica leggera per controllare lo stato del db in produzione.
+
+##### 4.2.3 Tabelle 'users' e 'games'
+Di seguito vengono riportate le tabelle utilizzate per memorizzare gli utenti e le partite. E' fondamentale notare come ci sia una relazione ONE_TO_MANY tra la tabella degli utenti e quella dei giochi, dove l'attributo "userId" della tabella "games" funge da chiave esterna.
+
+###### users table
+| Colonna   | Tipo     | Descrizione                                    |
+|-----------|----------|------------------------------------------------|
+| id        | INTEGER  | Chiave primaria, auto-incrementata             |
+| username  | STRING   | Nome utente, unico, formato email              |
+| password  | STRING   | Password dell'utente crittografata             |
+| tokens    | FLOAT    | Token dell'utente, valore predefinito 0.45     |
+| points    | FLOAT    | Punti dell'utente, valore predefinito 0        |
+| isAdmin   | BOOLEAN  | Indica se l'utente è admin, default = false    |
+
+Il seed iniziale (<i>src/seeds/initialSeed.ts</i>) prevede i seguenti valori:
+
+| Username            | Password       | Tokens | Points | IsAdmin | CreatedAt           | UpdatedAt           |
+|---------------------|----------------|--------|--------|---------|---------------------|---------------------|
+| user1@example.com   | password1      | 10     | 0      | false   | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
+| user2@example.com   | password2      | 0.45   | 1      | false   | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
+| admin@example.com   | adminpassword  | 100    | 10     | true    | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
+| user3@example.com   | password3      | 0      | 0      | false   | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
+
+
+###### games table
+| Colonna     | Tipo                | Descrizione                                 |
+|-------------|---------------------|---------------------------------------------|
+| id          | INTEGER             | Chiave primaria, auto-incrementata          |
+| userId      | INTEGER             | ID dell'utente, chiave esterna              |
+| aiLevel     | INTEGER             | Livello di difficoltà dell'IA               |
+| status      | STRING              | Stato del gioco, default = "IN_PROGRESS"    |
+| boardObj    | JSONB               | Oggetto che contiene lo stato del gioco     |
+
+Il seed secondario (<i>src/seeds/secondSeed.ts</i>) prevede i seguenti valori:
+
+| UserID | AI Level | Status         | BoardObj                    | CreatedAt           | UpdatedAt           |
+|--------|----------|----------------|-----------------------------|---------------------|---------------------|
+| 2      | 1        | WON            | [game_data_won.JSON]        | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
+| 2      | 1        | DRAW           | [game_data_drawn.JSON]      | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
+| 1      | 2        | IN_PROGRESS    | [game_data_losing.JSON]     | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
+| 2      | 1        | IN_PROGRESS    | [game_data_winning.JSON]    | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
 
 
 #### 4.3 JSON Web Token
@@ -396,8 +495,7 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 
 ####  Riferimenti
-- Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519
-">corso</a>
+- Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519">corso</a>
 - JS basics: https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/
 - TS basics: https://learn.microsoft.com/en-us/training/paths/build-javascript-applications-typescript/
 - Full stack Open Part3-4-9-12-13: https://fullstackopen.com/en/
@@ -406,10 +504,37 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 - TS Declaration Merging: https://stackoverflow.com/questions/37377731/extend-express-request-object-using-typescript
 - Esercitazioni personali: https://github.com/lucabk/Full-Stack-Open
 
+## 5 - Rotte e UML
+
+### 5.1 Rotte API
+In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in locale nella porta 3003 specificata nel file ".env", non riportato nella repository per ovvie ragioni; quindi tutte le rotte fanno riferimento al base URL dell'API: "http://localhost:3003".
+
+| Verbo HTTP | URL Rotta             | JWT Required | Payload |
+|------------|-----------------------|--------------|---------|
+| POST       | /api/login            | No           | Yes     |
+| POST       | /api/creategame       | Yes          | Yes     |
+| POST       | /api/makemove         | Yes          | Yes     |
+| GET        | /api/game/history/:id | Yes          | No      |
+| GET        | /api/game/status/:id  | Yes          | No      |
+| PUT        | /api/quit             | Yes          | Yes     |
+| PUT        | /api/refill           | Yes          | Yes     |
+
+
+### 5.2 UML
+In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta.
+
+#### 5.2.1 Login
+La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale).
+#### 5.2.2 Create game
+#### 5.2.3 Make move
+#### 5.2.4 Get history
+#### 5.2.5 Get status
+#### 5.2.6 Quit
+#### 5.2.7 Refill
 
   
-## 5 - DESIGN PATTERN UTILIZZATI
-### 5.1 MVC (Model-View-Controller)
+## 6 - DESIGN PATTERN UTILIZZATI
+### 6.1 MVC (Model-View-Controller)
 Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
 
 - Manutenibilità: Separazione delle responsabilità tra modelli, controller e router, facilitando le modifiche e la gestione del codice.
@@ -418,32 +543,93 @@ Il progetto utilizza il pattern MVC per organizzare il codice del backend. Quest
 - Scalabilità: La struttura facilita l'aggiunta di nuove funzionalità senza compromettere l'architettura esistente.
 - Chiarezza e Organizzazione: Il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
 
-### 5.2 Singleton
+### 6.2 Singleton
 Il progetto utilizza il pattern Singleton per gestire la connessione al database. Questo approccio offre numerosi vantaggi:
 
 - Istanza Unica: Garantisce che ci sia una sola istanza di Sequelize in tutta l'applicazione, evitando problemi di concorrenza e migliorando l'efficienza.
 - Punto di Accesso Globale: La costante sequelize è accessibile globalmente attraverso l'importazione nei modelli, facilitando la gestione della connessione al database.
 - Manutenibilità: Centralizza la gestione della connessione al database, rendendo il codice più facile da mantenere e aggiornare.
 
-### 5.3 Factory
+### 6.3 Factory
 Il progetto utilizza il pattern Factory per la gestione degli errori. Questo approccio offre numerosi vantaggi:
 
 - Centralizzazione della Logica di Creazione: La logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione.
 - Flessibilità: Permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza.
 - Chiarezza e Organizzazione: Migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori.
 
+### 6.4 COR
+Il progetto utilizza il pattern Chain Of Responsibility (COR) per gestire il flusso dei middleware. Questo approccio offre numerosi vantaggi:
+
+- Flessibilità: Permette di combinare diversi middleware in catene flessibili, dove ogni middleware può eseguire un'azione specifica o passare al successivo.
+- Manutenibilità: Ogni middleware è responsabile di una singola operazione, rendendo il codice più facile da mantenere e aggiornare.
+- Riutilizzabilità: I middleware possono essere riutilizzati in diverse catene, migliorando la coerenza e riducendo la duplicazione del codice.
+- Separazione delle Responsabilità: Ogni middleware gestisce un aspetto specifico della richiesta o della risposta, migliorando l'organizzazione del codice.
+- Scalabilità: È facile aggiungere, rimuovere o sostituire i middleware senza influenzare il resto della catena, facilitando l'estensione delle funzionalità.
+
+Si riportano le seguenti catene di middleware:
+
+- createGame Chain:
+```bash
+createGame
+  ├── tokenExtractor
+  ├── createGameParser
+  ├── getUserById
+  ├── checkOneGameAtTime
+  └── checkMinAmntToken
+```
+
+- makeMove Chain:
+```bash
+makeMove
+  ├── tokenExtractor
+  ├── makeMoveParser
+  ├── getUserById
+  ├── checkGameById
+  ├── checkUserOfTheGame
+  └── checkStillPlaying
+```
+
+- getHistory / getStatus Chain:
+```bash
+getHistory / getStatus
+  ├── tokenExtractor
+  ├── getUserById
+  ├── checkRemainingTokens
+  ├── getGameById
+  └── checkUserOfTheGame
+```
+
+- refill Chain:
+```bash
+refill
+  ├── tokenExtractor
+  ├── refillParser
+  ├── getUserById
+  ├── isAdmin
+  └── userToRefill
+```
+
+- quitGame Chain:
+```
+quitGame
+  ├── tokenExtractor
+  ├── quitParser
+  ├── getUserById
+  ├── checkRemainingTokens
+  ├── checkGameById
+  ├── checkUserOfTheGame
+  └── checkAlreadyQuitted
+```
+
 
 ####  Riferimenti
-- Factory: [https://github.com/manciniadriano/pa2021/tree/main](https://github.com/manciniadriano/pa2021/blob/main/pattern/factory/factoryErr.ts)
+- Pattern: https://github.com/manciniadriano/pa2021/tree/main/pattern
+  
 
+## 7 - TEST e AVVIO DELL'APP
+Durante lo sviluppo del progetto sono stati utilizzati test riportati di seguito.
 
-## 6 - TEST e AVVIO DELL'APP
-Durante lo sviluppo del progetto sono stati utilizzate diverse tipologie di test riportati di seguito.
-
-### 6.1 VSCode Rest client
-Un metodo molto semplice per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste. Questi test sono preliminari e dovuti agli istanti iniziali di sviluppo dell'applicazione, quindi non devono essere considerati assolutamente come dei test finali ed esaustivi dell'intero progetto.
-
-### 6.2 Newman e Avvio del servizio
+### 7.1 Newman e Avvio del servizio
 I test sono stati effettuati tramite Newman. Prima di lanciare i test, bisogna clonare la repository ed avere installato Docker.
 
 ```bash
@@ -474,10 +660,13 @@ newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 ```
 Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```.
 
+Si  noti come i test valutino lo status code ritornato dalla API secondo degli script propri di Postman.
 
-### 6.3 Librerie node:test e supertest
+### 7.3 Ulteriori test (VSCode Rest client, node:test e supertest)
+Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
 
 ####  Riferimenti
+-  Postman 
 -  Full Stack Open - REST client: https://fullstackopen.com/en/part3/node_js_and_express#the-visual-studio-code-rest-client
 -  Full Stack Open - Testing Node app: https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#testing-node-applications
 -  Full Stack Open - Testing the backend: https://fullstackopen.com/en/part4/testing_the_backend
