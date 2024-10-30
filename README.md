@@ -405,11 +405,8 @@ src
 │   ├── index.ts
 │   └── users.ts
 ├── routes
-│   ├── create_game.ts
-│   ├── game_statistics.ts
+│   ├── game.ts
 │   ├── login.ts
-│   ├── make_move.ts
-│   ├── quit_game.ts
 │   └── refill_tokens.ts
 ├── saved_games
 │   ├── game_data_drawn.JSON
@@ -507,13 +504,13 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 ## 5 - Rotte e UML
 
 ### 5.1 Rotte API
-In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in locale nella porta 3003 specificata nel file ".env", non riportato nella repository per ovvie ragioni; quindi tutte le rotte fanno riferimento al base URL dell'API: "http://localhost:3003".
+In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in locale nella porta 3003 specificata nel file ".env", non riportato nella repository per ovvie ragioni; quindi tutte le rotte fanno riferimento al <i>base URL</i> dell'API: "http://localhost:3003".
 
 | Verbo HTTP | URL Rotta             | JWT Required | Payload |
 |------------|-----------------------|--------------|---------|
 | POST       | /api/login            | No           | Yes     |
-| POST       | /api/creategame       | Yes          | Yes     |
-| POST       | /api/makemove         | Yes          | Yes     |
+| POST       | /api/game             | Yes          | Yes     |
+| POST       | /api/game/play        | Yes          | Yes     |
 | GET        | /api/game/history/:id | Yes          | No      |
 | GET        | /api/game/status/:id  | Yes          | No      |
 | PUT        | /api/quit             | Yes          | Yes     |
