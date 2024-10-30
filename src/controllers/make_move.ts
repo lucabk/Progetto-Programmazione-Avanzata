@@ -34,8 +34,13 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
             next(result)
             return
         }
+
+        else if (typeof(result) === 'string'){
+            res.status(StatusCodes.CREATED).json({ "game result":result })
+            return            
+        }
        
-        res.status(StatusCodes.CREATED).json({ result })
+        res.status(StatusCodes.CREATED).json({ "board 1D array":result })
 
     }catch(err){
         next(err)
