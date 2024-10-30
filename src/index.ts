@@ -6,11 +6,8 @@ import { errorMiddleware, unknownEndpoint } from './middleware/errors_middleware
 import morgan from 'morgan';
 import cors from 'cors';
 import loginRouter from './routes/login';
-import createGameRouter from './routes/create_game';
-import makeMoveRouter from './routes/make_move';
-import showStatisticsRouter from './routes/game_statistics';
+import gameRouter from './routes/game';
 import refillRouter from './routes/refill_tokens';
-import quitGameRouter from './routes/quit_game';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 morgan.token('body', (req: express.Request) => JSON.stringify(req.body))
@@ -23,12 +20,9 @@ app.use(express.json())
 
 
 //routes***********
-app.use('/api/login', loginRouter) //send token after login
-app.use('/api/creategame', createGameRouter) //create new game
-app.use('/api/makemove', makeMoveRouter) //make a move
-app.use('/api/game', showStatisticsRouter) //shows history and game status
-app.use('/api/quit', quitGameRouter) //quit game
-app.use('/api/refill', refillRouter)
+app.use('/api/login', loginRouter) //login route
+app.use('/api/game', gameRouter) //game routes
+app.use('/api/refill', refillRouter) //refill route
 //routes***********
 
 app.use(unknownEndpoint)
