@@ -37,7 +37,7 @@ loginRouter.post('/', userLoginParser, async (req: Request<unknown, unknown, new
         userForToken,
         KEY                                         //,{ expiresIn: 60*60 }
     )
-    res.send({token, username})
+    res.json({token, username})
     console.log('TOKEN sent')
 })
 

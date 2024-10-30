@@ -5,5 +5,5 @@ export const getStatus = (req:Request, res:Response) => {
     const status:GameStatus = req.game.status
 
     console.log('Game status: ',status)
-    res.json(status)
+    res.json({ status })
 }

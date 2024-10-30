@@ -9,7 +9,8 @@ import { DraughtsGameHistory1D } from 'rapid-draughts/dist/core/game';
 import { ErrorMsg, factory } from '../utils/errorFactory';
 import { StatusCodes } from 'http-status-codes';
 import { GameStatus } from '../utils/type';
-import { updateDb, updateDbEndGame, subtractTokens, addTokens } from './helper_fun';
+import { updateDb, updateDbEndGame, subtractTokens, addPoints } from './helper_fun';
+import { DraughtsBoard1D } from 'rapid-draughts/dist/core/game';
 
 export const play = async (
     difficulty:number, 
@@ -19,7 +20,7 @@ export const play = async (
     destination:number,
     gameId:number,
     userId:number
-        ):Promise<string | ErrorMsg> => {
+        ):Promise<  DraughtsBoard1D | ErrorMsg | string > => {
 
     // Initialise the game
     const draughts = Draughts.setup(data, history);
@@ -64,7 +65,7 @@ export const play = async (
         if(draughts.status !== DraughtsStatus.PLAYING){
             //User won
             if(draughts.status === DraughtsStatus.DARK_WON){
-                await addTokens(userId)
+                await addPoints(userId)
 
                 const newGameState = {
                     data : draughts.engine.data,
@@ -122,8 +123,8 @@ export const play = async (
         }
         await updateDb(newGameState, gameId)
         
-        //return the board
-        return draughts.asciiBoard()
+        //return the board in two ways
+        return draughts.board
     }
 
     //this condition should never occur due to middleware 'checkStillPlaying'

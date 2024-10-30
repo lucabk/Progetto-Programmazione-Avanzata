@@ -39,8 +39,8 @@ export const subtractTokens = async (userId:number) => {
 }
 
 
-//Add token for victory
-export const addTokens = async (userId:number) => {
+//Add points for victory
+export const addPoints = async (userId:number) => {
     await User.increment({ points: POINTS_AFTER_WIN },  { where: { id: userId }})
 }
 

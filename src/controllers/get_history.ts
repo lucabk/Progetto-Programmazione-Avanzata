@@ -6,5 +6,5 @@ export const getHistory = (req:Request, res:Response) => {
     const moves = gameState.history.moves
     
     console.log('Move history:\n',moves)
-    res.json(moves)
+    res.json({ moves })
 }

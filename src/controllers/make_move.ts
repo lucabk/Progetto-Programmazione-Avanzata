@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { newMoveEntry } from "../utils/type";
+import { newMoveEntry, BoardObjInterface } from "../utils/type";
 import { StatusCodes } from 'http-status-codes';
-import { BoardObjInterface } from '../utils/type';
 import { play } from '../game/play';
 import { ErrorMsg } from '../utils/errorFactory';
+import { DraughtsBoard1D } from 'rapid-draughts/dist/core/game';
+
 
 export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:Response, next:NextFunction) => {
   
@@ -26,14 +27,15 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
 
     try{
         //play the move (difficulty, gameState, move, game ad user Ids)
-        const result: string|ErrorMsg = await play(difficulty, data, history, origin, destination, gameId, userId)
+        const result: string|ErrorMsg|DraughtsBoard1D = await play(difficulty, data, history, origin, destination, gameId, userId)
         
         //check if the move is allowed
-        if(typeof(result) !== 'string'){
+        if((result as ErrorMsg).msg && (result as ErrorMsg).statusCode){
             next(result)
             return
         }
-        res.status(StatusCodes.CREATED).send(result)
+       
+        res.status(StatusCodes.CREATED).json({ result })
 
     }catch(err){
         next(err)

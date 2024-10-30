@@ -27,21 +27,6 @@ export const createNewGame = async (req: Request<unknown, unknown, newGameEntry>
         res.status(StatusCodes.CREATED).json({ message: 'Game created successfully', gameId: game.id })
         console.log('New game created!\nBoard:\n',draughts.asciiBoard());
         
-        /*console.log('draughts:\n', draughts)
-        console.log('********************************\n')
-        console.log('draughts.board:\n',draughts.board)
-
-        console.log('draughts.moves\n',draughts.moves)
-        console.log('********************************\n')
-        console.log('draughts.player\n',draughts.player)
-        console.log('********************************\n')
-        console.log('draughts.status\n',draughts.status)
-        
-        console.log('********************************\n')
-        console.log('draughts.engine.data\n',draughts.engine.data)
-        console.log('********************************\n')
-        console.log('draughts.history\n',draughts.history)
-        console.log('********************************\n')*/
 
     }catch(err){
         next(err)
