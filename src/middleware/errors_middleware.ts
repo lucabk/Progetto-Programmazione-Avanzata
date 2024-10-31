@@ -21,15 +21,21 @@ export const errorMiddleware = (error: unknown, _req: express.Request, res: expr
 
     //**express-async-errors**
 
+    //Invalid JSON format
+    if (error instanceof SyntaxError ){
+        res.status(StatusCodes.BAD_REQUEST).json({ error : 'Invalid JSON format'})
+        return
+    }
+
     //Sequelize error handling
-    if(error instanceof ValidationError){
-        res.status(StatusCodes.CONFLICT).json({ error : error.errors[0].message })
+    else if(error instanceof ValidationError){
+        res.status(StatusCodes.CONFLICT).json({ SequelizeError : error.errors[0].message })
         return //return before calling Express error handler with next(error), avoiding console errors output
     }
 
     //Zod error handling
-    if (error instanceof z.ZodError) {
-      res.status(StatusCodes.BAD_REQUEST).send({ error: error.issues });
+    else if (error instanceof z.ZodError) {
+      res.status(StatusCodes.BAD_REQUEST).json({ ZodError: error.issues });
       return
     } 
     next(error)
