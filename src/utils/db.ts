@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import { DATABASE_URL } from "./config";
 import { Umzug, SequelizeStorage } from "umzug";
+import { MIGRATION_PATH, SEED_PATH } from "./config";
 
 //SINGLETON
 class Database {
@@ -25,7 +26,7 @@ export const sequelize = Database.getInstance();
 const runMigrations = async () => {
   const migrator = new Umzug({
     migrations: {
-      glob: '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts', //global path
+      glob: MIGRATION_PATH, //global path
     },
     storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
     context: sequelize.getQueryInterface(),
@@ -42,7 +43,7 @@ const runMigrations = async () => {
 const runSeeds = async () => {
   const seeder = new Umzug({
     migrations: {
-      glob: '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts', 
+      glob: SEED_PATH, 
     },
     context: sequelize.getQueryInterface(),
     storage: new SequelizeStorage({ sequelize, tableName: 'seeds' }),
