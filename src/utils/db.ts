@@ -1,7 +1,9 @@
 import { Sequelize } from "sequelize";
 import { DATABASE_URL } from "./config";
 import { Umzug, SequelizeStorage } from "umzug";
-import { MIGRATION_PATH, SEED_PATH } from "./config";
+
+const MIGRATION_PATH: string  = '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts'
+const SEED_PATH: string =  '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts'
 
 //SINGLETON
 class Database {
