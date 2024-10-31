@@ -3,8 +3,8 @@ import { newMoveEntry, BoardObjInterface } from "../utils/type";
 import { StatusCodes } from 'http-status-codes';
 import { play } from '../game/play';
 import { ErrorMsg } from '../utils/errorFactory';
-import { DraughtsBoard1D } from 'rapid-draughts/dist/core/game';
-
+import { EnglishDraughtsGame } from 'rapid-draughts/english';
+import { isErrorMsg } from '../utils/type';
 
 export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:Response, next:NextFunction) => {
   
@@ -26,21 +26,30 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
     //console.log('history:\n', history)
 
     try{
-        //play the move (difficulty, gameState, move, game ad user Ids)
-        const result: string|ErrorMsg|DraughtsBoard1D = await play(difficulty, data, history, origin, destination, gameId, userId)
+        //play the move (difficulty, gameState, move, game and user Ids)
+        const result: string|ErrorMsg|EnglishDraughtsGame = await play(difficulty, data, history, origin, destination, gameId, userId)
         
-        //check if the move is allowed
-        if((result as ErrorMsg).msg && (result as ErrorMsg).statusCode){
+        //move not allowed
+        if(isErrorMsg(result)){
+            console.error('move not allowed')
             next(result)
             return
         }
-
+        //game ended
         else if (typeof(result) === 'string'){
             res.status(StatusCodes.CREATED).json({ "game result":result })
+            console.log('game ended')
             return            
         }
-       
-        res.status(StatusCodes.CREATED).json({ "board 1D array":result })
+        //still playing...
+        //...query string
+        else if (req.query.format === 'ascii'){
+            res.status(StatusCodes.CREATED).send(result.asciiBoard())
+            console.log('query string')
+            return
+        }
+        //...deafult res (JSON)
+        res.status(StatusCodes.CREATED).json({ "board 1D array":result.board })
 
     }catch(err){
         next(err)

@@ -10,7 +10,7 @@ import { ErrorMsg, factory } from '../utils/errorFactory';
 import { StatusCodes } from 'http-status-codes';
 import { GameStatus } from '../utils/type';
 import { updateDb, updateDbEndGame, subtractTokens, addPoints } from './helper_fun';
-import { DraughtsBoard1D } from 'rapid-draughts/dist/core/game';
+import { EnglishDraughtsGame } from 'rapid-draughts/english';
 
 export const play = async (
     difficulty:number, 
@@ -20,7 +20,7 @@ export const play = async (
     destination:number,
     gameId:number,
     userId:number
-        ):Promise<  DraughtsBoard1D | ErrorMsg | string > => {
+        ):Promise<  EnglishDraughtsGame | ErrorMsg | string > => {
 
     // Initialise the game
     const draughts = Draughts.setup(data, history);
@@ -45,7 +45,6 @@ export const play = async (
         const allowedMove = moves.find(move => move.origin === origin && move.destination === destination)
         if(!allowedMove){
             const showAllowedMoves = moves.map(move => `(${move.origin},${move.destination})`).join(', ')
-            console.error('move not allowed!')
             const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, `move not allowed! Allowed moves (origin,destination): ${showAllowedMoves}`)
             return error
         }
@@ -123,8 +122,8 @@ export const play = async (
         }
         await updateDb(newGameState, gameId)
         
-        //return the board in two ways
-        return draughts.board
+        //return draughts obj
+        return draughts
     }
 
     //this condition should never occur due to middleware 'checkStillPlaying'

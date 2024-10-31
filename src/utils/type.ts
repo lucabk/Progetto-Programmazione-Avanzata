@@ -3,6 +3,7 @@ import { MIN_TOKEN } from '../models';
 import { DraughtsEngineData } from 'rapid-draughts/dist/core/engine';
 import { EnglishDraughtsEngineStore } from 'rapid-draughts/dist/english/engine';
 import { DraughtsGameHistory1D } from 'rapid-draughts/dist/core/game';
+import { ErrorMsg } from './errorFactory';
 
 //Define the cost of a single move in tokens
 export const TOKEN_MOVE_COST:number = 0.0125 
@@ -18,6 +19,21 @@ export enum GameStatus {
     WON = 'won',
     LOST = 'lost',
     DRAW = 'draw',
+}
+
+//boardObj interface
+export interface BoardObjInterface {
+    data: Partial<DraughtsEngineData<number, EnglishDraughtsEngineStore>>;
+    history: Partial<DraughtsGameHistory1D>;
+}
+
+//ErrorMsg type guard function
+export const isErrorMsg = (obj: unknown): obj is ErrorMsg => {
+    if (typeof obj === 'object' && obj !== null){
+        if ('statusCode' in obj && 'msg' in obj)
+            return obj && typeof obj.statusCode === 'number' && typeof obj.msg === 'string';
+    }
+    return false
 }
 
 /************************************** */
@@ -60,10 +76,3 @@ export const newQuitSchema = z.object({
     gameId: z.number().nonnegative().int()
 })
 export type newQuitEntry =z.infer< typeof newQuitSchema >
-
-
-//boardObj interface
-export interface BoardObjInterface {
-    data: Partial<DraughtsEngineData<number, EnglishDraughtsEngineStore>>;
-    history: Partial<DraughtsGameHistory1D>;
-}
