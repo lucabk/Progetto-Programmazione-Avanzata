@@ -5,6 +5,7 @@ import { play } from '../game/play';
 import { ErrorMsg } from '../utils/errorFactory';
 import { EnglishDraughtsGame } from 'rapid-draughts/english';
 import { isErrorMsg } from '../utils/type';
+//import { sequelize } from '../utils/db';
 
 export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:Response, next:NextFunction) => {
   
@@ -24,6 +25,9 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
     
     //console.log('data:\n',data)
     //console.log('history:\n', history)
+    
+    //Start a transaction from sequelize connection and save it into a variable
+    //const transaction = await sequelize.transaction()
 
     try{
         //play the move (difficulty, gameState, move, game and user Ids)
@@ -48,10 +52,16 @@ export const makeMove = async (req:Request<unknown, unknown, newMoveEntry>, res:
             console.log('query string')
             return
         }
+        
+        // If the execution reaches this line, no errors were thrown: commit the transaction.
+        //await transaction.commit();
+        
         //...deafult res (JSON)
         res.status(StatusCodes.CREATED).json({ "board 1D array":result.board })
 
     }catch(err){
+        // If the execution reaches this line, an error was thrown: rollback the transaction.
+        //await transaction.rollback()
         next(err)
     }
 
