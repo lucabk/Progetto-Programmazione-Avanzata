@@ -1,5 +1,38 @@
 # PROGRAMMAZIONE AVANZATA
 
+## 0 - OBIETTIVI DEL PROGETTO
+
+### 0.1 - Specifiche Esame
+
+### 0.2 - Dama Inglese
+Si riportano dei richiami sulle caratteristiche della dama inglese al fine di permettere un totale coinvolgimento dell'utente durante la partita:
+- Scacchiera e Pezzi: La dama inglese si gioca su una scacchiera 8x8 con 12 pezzi per ciascun giocatore, di solito di colore rosso e bianco. I pezzi possono muoversi solo sulle caselle scure.
+- Obiettivo: L'obiettivo del gioco è catturare tutti i pezzi dell'avversario o bloccare le sue mosse in modo che non possa più muoversi.
+- Movimento e Cattura: I pezzi si muovono diagonalmente in avanti di una casella vuota per volta. Quando un pezzo può "saltare" su uno dell'avversario, lo cattura obbligatoriamente. Il salto avviene in modo diagonale e il pezzo avversario deve essere immediatamente dietro il proprio.
+- Promozione a Re: Quando un pezzo raggiunge il lato opposto della scacchiera, viene promosso a "re". I re possono muoversi e catturare sia in avanti sia indietro.
+- Fine del Gioco: Il gioco termina quando un giocatore cattura tutti i pezzi avversari, blocca tutte le sue mosse, oppure l'avversario si arrende. In mancanza di mosse per entrambi, si dichiara un pareggio.
+
+#### 0.2.1 Rappresentazione della scacchiera
+La tastiera è rappresentata in modo tale che solo le caselle nere (le uniche occupabili) abbiano un numero che li rappresente; quindi, per effettuare una mossa si specifica la casella di origine e quella di destinazione indicando rispettivamente i propri numeri.
+
+|    |  0  |    |  1  |    |  2  |    |  3  |
+|----|-----|----|-----|----|-----|----|-----|
+|  4 |     |  5 |     |  6 |     |  7 |     |
+|    |  8  |    |  9  |    |  10 |    |  11 |
+|  12|     |  13|     |  14|     |  15|     |
+|    |  16 |    |  17 |    |  18 |    |  19 |
+|  20|     |  21|     |  22|     |  23|     |
+|    |  24 |    |  25 |    |  26 |    |  27 |
+|  28|     |  29|     |  30|     |  31|     |
+
+Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine cerchio
+
+
+
+####  Riferimenti
+- rapid-draughts: https://loks0n.dev/projects/rapid-draughts#224-game-history
+- dama inglese: https://draughts.org/
+
 ## 1 - INSTALLAZIONE COMPONENTI
 
 ### 1.1 WSL
@@ -284,7 +317,7 @@ Questo progetto utilizza Docker per eseguire un container PostgreSQL e uno strum
 
 - **adminer**: Fornisce un'interfaccia web leggera per la gestione del database, accessibile sulla porta `8080`.
 
-Il volume `db-data` consente di mantenere i dati persistenti anche dopo i riavvii del container.
+Il volume `db-data` consente di mantenere i dati persistenti anche dopo il riavvio del container.
 
 ```mermaid
 graph TD;
@@ -320,8 +353,9 @@ Come anticipato, l'applicazione è stata sviluppata eseguendo Typescript (con ts
 ```bash
 npm run tsc
 ```
+Vengono esclusi dalla compilazione i file relativi alle migrazioni e ai seed, perché si affidano queste operazioni alla fase di sviluppo e non alla produzione; si aggiunge la seguente riga al <i>tsconfig.json</i>: ``` "exclude": ["src/migrations", "src/seeds"] ```.
 Successivamente si scrivono Dockerfile e si amplia il Docker Compose. Il Dockerfile fa riferimento alle variabili nel file .env con le variabili di ambiente configurate per il corretto funzionamento del sistema. Si ricorda che, avendo sviluppato l'applicazione fuori dal container, una volta dentro Docker i servizi di rete vengono gestiti automaticamente tramite l'hostname e non più l'indirizzo IPv4 localhost (127.0.0.1).
-Il Dockerfile prende alcuni accorgimenti: runnare da utente privo di privilegi di root e installare le dipendenze fedelmente alle versioni presenti in modo deterministico. 
+Il Dockerfile prende alcuni accorgimenti: runnare da utente privo di privilegi di root e installare, in modo deterministico, le dipendenze presenti nel <i>package.json</i>. 
 ```bash
 FROM node:20
 ENV NODE_ENV production
@@ -347,7 +381,7 @@ graph TD;
 
     B -->|Port: 5432| D[PostgreSQL Container];
     C -->|Port: 8080| E[Adminer Container];
-    H -->|Port: 3003| I[App Container];
+    I[App Container];
 
     B --> F[Environment Variables];
     F -->|POSTGRES_USER| D;
@@ -355,8 +389,9 @@ graph TD;
     F -->|POSTGRES_DB| D;
     
     H --> J[Environment Variables for App];
+    J -->|KEY| I;
+    J -->|PORT| I;
     J -->|DATABASE_URL| I;
-    J -->|JWT_SECRET| I;
 
     D --> G[db-data Volume];
     G -->|Persistent Data| D;
