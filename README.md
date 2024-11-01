@@ -3,17 +3,18 @@
 ## 0 - OBIETTIVI DEL PROGETTO
 
 ### 0.1 - Specifiche Esame
+La consegna dell'esame è contenuta all'interno del file Word.
 
 ### 0.2 - Dama Inglese
 Si riportano dei richiami sulle caratteristiche della dama inglese al fine di permettere un totale coinvolgimento dell'utente durante la partita:
-- Scacchiera e Pezzi: La dama inglese si gioca su una scacchiera 8x8 con 12 pezzi per ciascun giocatore, di solito di colore rosso e bianco. I pezzi possono muoversi solo sulle caselle scure.
+- Scacchiera e Pezzi: La dama inglese si gioca su una scacchiera 8x8 con 12 pezzi per ciascun giocatore, di solito di colore bianco (IA) e nero (utente). I pezzi possono muoversi solo sulle caselle scure.
 - Obiettivo: L'obiettivo del gioco è catturare tutti i pezzi dell'avversario o bloccare le sue mosse in modo che non possa più muoversi.
-- Movimento e Cattura: I pezzi si muovono diagonalmente in avanti di una casella vuota per volta. Quando un pezzo può "saltare" su uno dell'avversario, lo cattura obbligatoriamente. Il salto avviene in modo diagonale e il pezzo avversario deve essere immediatamente dietro il proprio.
+- Movimento e Cattura: I pezzi si muovono diagonalmente in avanti di una casella vuota per volta. Quando un pezzo può "saltare" su uno dell'avversario, lo cattura obbligatoriamente (mangiare è obbligatorio). Il salto avviene in modo diagonale e il pezzo avversario deve essere immediatamente dietro il proprio.
 - Promozione a Re: Quando un pezzo raggiunge il lato opposto della scacchiera, viene promosso a "re". I re possono muoversi e catturare sia in avanti sia indietro.
 - Fine del Gioco: Il gioco termina quando un giocatore cattura tutti i pezzi avversari, blocca tutte le sue mosse, oppure l'avversario si arrende. In mancanza di mosse per entrambi, si dichiara un pareggio.
 
-#### 0.2.1 Rappresentazione della scacchiera
-La tastiera è rappresentata in modo tale che solo le caselle nere (le uniche occupabili) abbiano un numero che li rappresente; quindi, per effettuare una mossa si specifica la casella di origine e quella di destinazione indicando rispettivamente i propri numeri.
+#### Rappresentazione della scacchiera
+La scacchiera è disegnata in modo tale che solo le caselle nere, le uniche occupabili, abbiano un numero che le rappresenti; quindi, per effettuare una mossa si specifica la casella di origine e quella di destinazione indicando rispettivamente i propri numeri.
 
 |    |  0  |    |  1  |    |  2  |    |  3  |
 |----|-----|----|-----|----|-----|----|-----|
@@ -25,13 +26,24 @@ La tastiera è rappresentata in modo tale che solo le caselle nere (le uniche oc
 |    |  24 |    |  25 |    |  26 |    |  27 |
 |  28|     |  29|     |  30|     |  31|     |
 
-Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine cerchio
+Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine nere a forma di cerchio (in alto nella scacchiera); la disposizione di partenza delle pedine è rappresentata nella seguente figura.
 
+|    |  o  |    |  o  |    |  o  |    |  o  |
+|----|-----|----|-----|----|-----|----|-----|
+|  o |     |  o |     |  o |     |  o |     |
+|    |  o  |    |  o  |    |  o  |    |  o  |
+|  12|     |  13|     |  14|     |  15|     |
+|    |  16 |    |  17 |    |  18 |    |  19 |
+|  x |     |  x |     |  x |     |  x |     |
+|    |  x  |    |   x |    |  x  |    |  x  |
+|  x |     |  x |     |  x |     |  x |     |
+
+Nel gioco i re vengono rappresentati rispettivamente con le maiuscole: "O" e "X".
 
 
 ####  Riferimenti
 - rapid-draughts: https://loks0n.dev/projects/rapid-draughts#224-game-history
-- dama inglese: https://draughts.org/
+- Tipologie di dama: https://draughts.org/
 
 ## 1 - INSTALLAZIONE COMPONENTI
 
@@ -194,7 +206,12 @@ Da qui si creerà il file package.json. Nella macchina WSL è gia installato Typ
  npm install typescript --save-dev
 ```
 Il "compilatore" nativo di Typescript permettera la traduzione del codice con il comando ```tsc``` che, ad ogni modo, per coerenza nello sviluppo verrà integrato negli script del package.json.
-![image](https://github.com/user-attachments/assets/dc25f6d9-39f7-4157-b9d1-a74ca470c295)
+
+ ```bash
+  "scripts": {
+    "tsc": "tsc"
+  },
+```
 
 Adesso si può creare il file di configurazione di Typescript (TS): tsconfig.json. Si utilizza lo script appena settato:
 ```bash
@@ -215,7 +232,13 @@ Per facilitare lo sviluppo, verrà fatto uso di ts-node:
 npm install --save-dev ts-node-dev
 ```
 che verrà anche aggiunto tra gli script:
-![image](https://github.com/user-attachments/assets/57884f37-0d1b-430a-8190-bf7b0227f56d)
+
+ ```bash
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev src/index.ts"
+  },
+```
 
 Per lanciare l'applicazione in modalità sviluppatore si usa il comando:
 ```bash
@@ -228,13 +251,28 @@ Si utilizzerà anche ESlint per una maggior chiarezza e soldità nello sviluppo:
 npm install --save-dev eslint @eslint/js typescript-eslint @stylistic/eslint-plugin  @types/eslint__js
 ```
 Si aggiornano gli script per facilitarne l'utilizzo:
-![image](https://github.com/user-attachments/assets/cde9df07-e1b4-4aa1-9ca9-cce15f961cb9)
+
+ ```bash
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev src/index.ts",
+    "lint": "eslint ."
+  },
+```
 
 Per abilitare le regole si crea un file, nella root del progetto, denominato: eslint.config.mjs. Il contenuto del file può essere consultato nella repository.
 
 
 Si aggiunge anche uno script per lanciare il programma in production mode:
-![image](https://github.com/user-attachments/assets/8e396939-fda5-4d5d-aaba-a8bbcca91f84)
+
+ ```bash
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev src/index.ts",
+    "lint": "eslint .",
+    "start": "node build/index.js"
+  },
+```
 
 
 ### 2.3 Altri pacchetti
@@ -401,6 +439,7 @@ graph TD;
 
 ```
 
+
 ####  Riferimenti
 
 - Full Stack Open - Containers: [https://fullstackopen.com/en/](https://fullstackopen.com/en/part12)
@@ -465,11 +504,12 @@ src
 #### 4.2 PostgreSQL
 ##### 4.2.1 Migration and Seed
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
-Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato.
+Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato. Di conseguenza, si è aggiunto il parametro  ``` "resolveJsonModule": true, ``` all'interno del <i>tsconfig.js</i> per gestire i file JSON contenenti lo stato del gioco per effettuare i seed iniziali.
 Di seguito è riportata la tabella relativa le migrazioni.
 
 ![image](https://github.com/user-attachments/assets/4fb2179d-f54c-4d44-94fa-6ab0f3dadb8f)
 
+Le migrazioni ed i seed si eseguono tutti in automatico una volta lanciata l'app di sviluppo con il comando ```npm run dev``` se e solo se la tabella appena mostrata è vuota. Per effettuare un <i>undo</i> delle migrazioni e dei seed si è scelta la via manuale: si eliminano direttamente da Adminer le tabelle <i>games</i> e <i>users</i> e tutto il contenuto della tabella relativa la migrazione. Una volta rilanciata l'app si effettuano nuovamente le migrazioni e i seed.
 
 ##### 4.2.2 Adminer
 Come accennato nella sezione relativa a Docker, è stato utilizzato un tool per il management del database, Adminer. Questa scelta implementativa è dovuta sia alla necessità di avere a disposizione una rapida visualizzazione dei dati in Postgres durante lo sviluppo ed i test, sia per avere una interfaccia grafica leggera per controllare lo stato del db in produzione.
@@ -514,6 +554,7 @@ Il seed secondario (<i>src/seeds/secondSeed.ts</i>) prevede i seguenti valori:
 | 2      | 1        | DRAW           | [game_data_drawn.JSON]      | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
 | 1      | 2        | IN_PROGRESS    | [game_data_losing.JSON]     | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
 | 2      | 1        | IN_PROGRESS    | [game_data_winning.JSON]    | 2024-10-29 15:39:22 | 2024-10-29 15:39:22 |
+
 
 
 #### 4.3 JSON Web Token
@@ -668,18 +709,19 @@ I test sono stati effettuati tramite Newman. Prima di lanciare i test, bisogna c
 git clone https://github.com/lucabk/Progetto-Programmazione-Avanzata.git
 ```
 
-Dato che i container fanno riferimento al file di variabili di ambiente, bisogna caricarne uno nella stessa directory del docker-compose:
+Per il corretto funzionamento di Docker Compose, è necessario generare un file .env nella directory del progetto. Questo file conterrà le variabili di ambiente necessarie per configurare i servizi Docker. È possibile creare il file .env utilizzando il seguente comando:
 
 ```bash
-echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+echo "
 PORT=3003
-POSTGRES_USER='postgres'
-POSTGRES_PASSWORD='postgres'
-POSTGRES_DB='postgres'
-KEY='mysecretkey'
-DATABASE_URL_PROD=postgres://postgres:postgres@db:5432/postgres'
-> .env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+KEY=mysecretkey
+DATABASE_URL_PROD=postgres://postgres:postgres@db:5432/postgres
+" > .env
 ```
+
 
 Quindi si può avviare il servizio con:
 ```bash
@@ -695,10 +737,12 @@ Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAM
 Si  noti come i test valutino lo status code ritornato dalla API secondo degli script propri di Postman.
 
 ### 7.3 Ulteriori test (VSCode Rest client, node:test e supertest)
-Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è stata creata una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
+Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è si può creare una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
+
+In aggiunta, si possono utilzzare le librerie <i>node:test e supertest</i> per scrivere dei test pù accurati, in modo tale che vadano a valuatre non solo le risposte del server, ma anche gli stati del database, interrogandolo direttamente durante i test.
 
 ####  Riferimenti
--  Postman 
+-  Postman e Newman: https://www.postman.com/
 -  Full Stack Open - REST client: https://fullstackopen.com/en/part3/node_js_and_express#the-visual-studio-code-rest-client
 -  Full Stack Open - Testing Node app: https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#testing-node-applications
 -  Full Stack Open - Testing the backend: https://fullstackopen.com/en/part4/testing_the_backend
