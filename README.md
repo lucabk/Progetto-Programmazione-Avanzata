@@ -327,7 +327,7 @@ la libreria umzug verrà utilizzata per fare le migration di Postgres.
 ```bash
 npm install umzug
 ```
-Nel path della migrazione va specificato il path assoluto della cartella relativa alle migrazioni, NON quello relativo.
+
 ___________________________________________________________
 nota1: la versione finale del package.json e del tsconfig.json possono essere consultati direttamente nella repository.
 
@@ -504,7 +504,7 @@ src
 #### 4.2 PostgreSQL
 ##### 4.2.1 Migration and Seed
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
-Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato. Di conseguenza, si è aggiunto il parametro  ``` "resolveJsonModule": true, ``` all'interno del <i>tsconfig.js</i> per gestire i file JSON contenenti lo stato del gioco per effettuare i seed iniziali.
+Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato. Di conseguenza, si è aggiunto il parametro  ``` "resolveJsonModule": true, ``` all'interno del <i>tsconfig.js</i> per gestire i file JSON contenenti lo stato del gioco per effettuare i seed iniziali. Nel path della migrazione e del seed va specificato il path assoluto della cartella relativa alle migrazioni e ai seed, non quello relativo.
 Di seguito è riportata la tabella relativa le migrazioni.
 
 ![image](https://github.com/user-attachments/assets/4fb2179d-f54c-4d44-94fa-6ab0f3dadb8f)
@@ -536,6 +536,7 @@ Il seed iniziale (<i>src/seeds/initialSeed.ts</i>) prevede i seguenti valori:
 | admin@example.com   | adminpassword  | 100    | 10     | true    | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
 | user3@example.com   | password3      | 0      | 0      | false   | 2024-10-29 15:37:32 | 2024-10-29 15:37:32 |
 
+Ovviamente i valori temporali fanno riferimento all'istante in cui si lanciano i seed (nella tabella è riportato solo un esempio).
 
 ###### games table
 | Colonna     | Tipo                | Descrizione                                 |
@@ -723,18 +724,58 @@ DATABASE_URL_PROD=postgres://postgres:postgres@db:5432/postgres
 ```
 
 
-Quindi si può avviare il servizio con:
+Ovviamente è necessario un ambiente Docker installato sulla propria macchina. Quindi si può avviare il servizio con:
 ```bash
 docker-compose up --build
 ```
 
-Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata scaricata la collection e bisogna creare il file delle variabili di ambiente in formato <i>.json</i>. Per lanciare l'esecuzione della collection:
+Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata scaricata la collection e bisogna creare il file delle variabili di ambiente in formato <i>.json</i>. Il file delle variabili deve essere così fatto:
+
+```bash
+{
+    "id": "e9103b34-ce86-4694-b7f7-60469f10e158",
+	"name": "PA2024",
+    "values": [
+        {
+			"key": "APIPORT",
+			"value": "3000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TOKENGAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TOKENGAME2",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TOKENGAME3",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TOKENGAMEADMIN",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+    ]
+  }
+  
+```
+
+Per lanciare l'esecuzione della collection:
 ```bash
 newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 ```
-Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```.
-
-Si  noti come i test valutino lo status code ritornato dalla API secondo degli script propri di Postman.
+Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti.
 
 ### 7.3 Ulteriori test (VSCode Rest client, node:test e supertest)
 Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è si può creare una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
