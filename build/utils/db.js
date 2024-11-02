@@ -13,8 +13,12 @@ exports.connectToDatabase = exports.sequelize = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("./config");
 const umzug_1 = require("umzug");
-const MIGRATION_PATH = '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts';
-const SEED_PATH = '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts';
+const MIGRATION_PATH = process.env.NODE_ENV === 'production'
+    ? './build/migrations/*.js'
+    : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts';
+const SEED_PATH = process.env.NODE_ENV === 'production'
+    ? './build/seeds/*.js'
+    : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts';
 //SINGLETON
 class Database {
     constructor() { }
@@ -62,6 +66,8 @@ const runSeeds = () => __awaiter(void 0, void 0, void 0, function* () {
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield exports.sequelize.authenticate();
+        console.log('MIGRATION_PATH:', MIGRATION_PATH);
+        console.log('SEED_PATH:', SEED_PATH);
         yield runMigrations();
         yield runSeeds();
         console.log('connected to the database');

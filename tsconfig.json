@@ -11,6 +11,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "typeRoots": ["./src/types"] 
-  },
-  "exclude": ["src/migrations", "src/seeds"]
+  }
 }

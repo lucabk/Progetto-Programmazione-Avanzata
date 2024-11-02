@@ -2,8 +2,12 @@ import { Sequelize } from "sequelize";
 import { DATABASE_URL } from "./config";
 import { Umzug, SequelizeStorage } from "umzug";
 
-const MIGRATION_PATH: string  = '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts'
-const SEED_PATH: string =  '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts'
+const MIGRATION_PATH: string  = process.env.NODE_ENV === 'production'
+  ? './build/migrations/*.js'
+  : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts'
+const SEED_PATH: string = process.env.NODE_ENV === 'production'
+  ? './build/seeds/*.js'
+  : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts'
 
 //SINGLETON
 class Database {
@@ -60,6 +64,8 @@ const runSeeds = async () => {
 export const connectToDatabase = async () => {
     try {
       await sequelize.authenticate()
+      console.log('MIGRATION_PATH:', MIGRATION_PATH)
+      console.log('SEED_PATH:', SEED_PATH)
       await runMigrations()
       await runSeeds()
       console.log('connected to the database')
