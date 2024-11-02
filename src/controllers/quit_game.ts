@@ -14,7 +14,7 @@ export const quitGame = async (req:Request<unknown, unknown, newQuitEntry>, res:
     const gameId:number = req.body.gameId
     
     
-    
+    //update game status
     await Game.update(
         { status: newGameStatus },
         {
