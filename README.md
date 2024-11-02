@@ -601,28 +601,96 @@ In questa sezione vi sono i diagrammi UML, in particolare:
 - Sequence Diagram
 
 #### 5.2.1 Use Case Diagram
+Si considerano tre tipi di utente:
+- Utente autenticato con JWT che interagisce con il gioco
+- Utente non autenticato che effettua il login per ricevere il token JWT
+- Admin che si occupa di ricaricare il credito (tokens) degli utenti giocatori
+
+<img alt="Use Case Diagram" src="./UML/PA-Use Case Diagram.drawio.png" width="70%">
+
 
 #### 5.2.2 Interaction Overview Diagram
 
+<img alt="Interaction Overview Diagram" src="./UML/PA-Interaction Overview Diagram.drawio.png">
+
 #### 5.2.3 Sequence Diagram
-In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta.
+In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica.
 
 #### 5.2.3.1 Login
-La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale).
+La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
+```bash
+{
+    "username":"user1@example.com",
+    "password":"password1"
+}
+```
+
+<img alt="Login" src="./UML/PA-Login.drawio.png">
+
 
 ##### 5.2.3.2 Create game
+La creazione di una partita prevede un utente autenticato mediante JWT che fornisce un body dalle seguenti caratteristiche:
+```bash
+{
+    "difficulty": 1
+}
+```
+L'utente autenticato viene poi verificato se appartenente agli user memeorizzati nel database e se ha altre partite ancora in corso. Nel caso di riscontri positivi, si provede a scalare, se disposibile, il credito richiesto per creare una nuova partita. Viene restituito un messaggio positivo e l'identificativo del gioco, se tutto è andato a buon fine.
+
+<img alt="Create game" src="./UML/PA-Create_Game.drawio.png">
+
 
 ##### 5.2.3.3 Make move
+Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fornire un req.body che rispetti questo formato:
+```bash
+{
+    "origin":20,
+    "destination": 24,
+    "gameId": 3
+}
+```
+Si verifica quindi che sia l'utente che l'id del gioco siano effettivamente presenti nel database, che l'utente sia davvero colui che sta giocando quella partita e che la partita sia ancora in corso; per ogni mossa valida si scala un credito (tokens), nel caso di vittoria si assegna 1 punto. Nel caso in cui la partita sia ancora in corso si resistuisce un array che rappresenta la disposizione della scacchiera (oppure l'ASCII della tavola, se specificato nella query string); se la partita è terminata con quella giocata viene dato il risultato finale, altrimenti si è sbagliata la mossa e si restituiscono quelle possibili.
+
+<img alt="Make move" src="./UML/PA-Make_Move.drawio.png">
+
 
 ##### 5.2.3.4 Get history
+Questa richiesta prevede sempre un client autenticato, ma non prevede un payload da inviare. Il gioco di cui richiedere le mosse eseguite si specifica direttamente nella URL. Si verifica se lo user è presente nel database, si controlla se ha un numero di tokens almeno pari a zero e se il gioco richiesto esiste nello storico e se è da lui creato. Infine, si resituiscono le mosse giocate.
+
+<img alt="Get history" src="./UML/PA-Get_History.drawio.png">
+
 
 ##### 5.2.3.5 Get status
+Il controllo della chain-of-responsability è analogo al caso precedente, ma ciò che si ritorna è lo stato del gioco (vittoria, sconfitta, pareggio, abbandono o in gioco).
 
-##### 5.2.3.6 Quit
+<img alt="Get status" src="./UML/PA-Get_Status.drawio.png">
+
+
+##### 5.2.3.6 Quit Game
+In caso di abbandono l'utente deve essere autenticato e deve fornire il payload con il corretto id del gioco da abbandonare:
+```bash
+{
+    "gameId" : 6
+}
+```
+Affinché l'operazione vada a buon fine si fa un controllo sullo user, sulla disponibilità di token almeno uguale a zero, sull'id del gioco da abbandonare e sulla sua appartenenza allo user stesso. Se il gioco non è terminato, si abbandona e si tolgono 0.5 punti. Si restituisce il nuovo valore di punti dello user.
+
+<img alt="Quit Game" src="./UML/PA-Quit_Game.drawio.png">
+
 
 ##### 5.2.3.7 Refill
+L'ultimo caso riguarda l'Admin che effettua una ricarica dei tokens ai vari user. L'utente quindi deve essere autenticato mediante JWT e, innanzitutto, fornire un payload con le seguenti caratteristiche:
+```bash
+{
+    "username":"user2@example.com",
+    "tokens":23
+}
+```
+Successivamente si verifica se l'utente è nella banca dati, se è un admin e se esiste lo user da ricaricare. Si restituisce il nuovo valore di token dello user.
 
-  
+<img alt="Refill" src="./UML/PA-Refill.drawio.png">
+
+
 ## 6 - DESIGN PATTERN UTILIZZATI
 ### 6.1 MVC (Model-View-Controller)
 Il progetto utilizza il pattern MVC per organizzare il codice del backend. Il modello si concentra sulla logica di business, mentre il controller si occupa di gestire e rispondere alle azioni dell'utente aggiornando il modello; il terzo componente (View) in questo caso è assente perché rientra nelle caratteristiche dello sviluppo front-end, può essere, ad esempio, implementato in React.
