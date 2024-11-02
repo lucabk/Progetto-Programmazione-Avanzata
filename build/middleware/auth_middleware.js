@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkOneGameAtTime = exports.checkStillPlaying = exports.checkAlreadyQuitted = exports.userToRefill = exports.isAdmin = exports.checkRemainingTokens = exports.getGameById = exports.checkUserOfTheGame = exports.checkGameById = exports.checkMinAmntToken = exports.getUserById = exports.tokenExtractor = void 0;
+exports.checkOneGameAtTime = exports.checkStillPlaying = exports.checkAlreadyEnded = exports.userToRefill = exports.isAdmin = exports.checkRemainingTokens = exports.getGameById = exports.checkUserOfTheGame = exports.checkGameById = exports.checkMinAmntToken = exports.getUserById = exports.tokenExtractor = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../utils/config");
 const http_status_codes_1 = require("http-status-codes");
@@ -169,16 +169,16 @@ const userToRefill = (req, _res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.userToRefill = userToRefill;
 //This middleware checks if the user has already quitted
-const checkAlreadyQuitted = (req, _res, next) => {
+const checkAlreadyEnded = (req, _res, next) => {
     console.log('checkAlreadyQuitted');
-    if (req.game.status === type_1.GameStatus.QUITTED) {
-        const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Game already quitted!');
+    if (req.game.status !== type_1.GameStatus.IN_PROGRESS) {
+        const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Game already ended!');
         next(error);
         return;
     }
     next();
 };
-exports.checkAlreadyQuitted = checkAlreadyQuitted;
+exports.checkAlreadyEnded = checkAlreadyEnded;
 //This middleware checks if the game is still in progress
 const checkStillPlaying = (req, _res, next) => {
     console.log('checkStillPlaying');

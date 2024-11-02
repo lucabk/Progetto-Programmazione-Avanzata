@@ -64,5 +64,5 @@ exports.quitGame = [
     authMiddleware.checkRemainingTokens,
     authMiddleware.checkGameById,
     authMiddleware.checkUserOfTheGame,
-    authMiddleware.checkAlreadyQuitted
+    authMiddleware.checkAlreadyEnded
 ];

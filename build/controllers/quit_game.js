@@ -22,7 +22,7 @@ const quitGame = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //update game status ('games' table)
     const newGameStatus = type_2.GameStatus.QUITTED;
     const gameId = req.body.gameId;
-    //***********TODO**********: update draughts.status = DraughtsStatus.LIGHT_WON
+    //update game status
     yield game_1.default.update({ status: newGameStatus }, {
         where: {
             id: gameId

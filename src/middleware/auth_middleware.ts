@@ -167,10 +167,10 @@ export const userToRefill = async (req: express.Request<unknown, unknown, newRef
 
 
 //This middleware checks if the user has already quitted
-export const checkAlreadyQuitted =  (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+export const checkAlreadyEnded =  (req: express.Request, _res: express.Response, next: express.NextFunction) => {
   console.log('checkAlreadyQuitted')
-  if(req.game.status === GameStatus.QUITTED){
-    const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'Game already quitted!')
+  if(req.game.status !== GameStatus.IN_PROGRESS){
+    const error:ErrorMsg = factory.getError(StatusCodes.BAD_REQUEST, 'Game already ended!')
     next(error)
     return
   }
