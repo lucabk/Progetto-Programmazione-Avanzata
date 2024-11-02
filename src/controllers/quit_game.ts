@@ -13,7 +13,7 @@ export const quitGame = async (req:Request<unknown, unknown, newQuitEntry>, res:
     const newGameStatus = GameStatus.QUITTED
     const gameId:number = req.body.gameId
     
-    //***********TODO**********: update draughts.status = DraughtsStatus.LIGHT_WON
+    
     
     await Game.update(
         { status: newGameStatus },
