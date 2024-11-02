@@ -391,7 +391,7 @@ Come anticipato, l'applicazione è stata sviluppata eseguendo Typescript (con ts
 ```bash
 npm run tsc
 ```
-Vengono esclusi dalla compilazione i file relativi alle migrazioni e ai seed, perché si affidano queste operazioni alla fase di sviluppo e non alla produzione; si aggiunge la seguente riga al <i>tsconfig.json</i>: ``` "exclude": ["src/migrations", "src/seeds"] ```.
+
 Successivamente si scrivono Dockerfile e si amplia il Docker Compose. Il Dockerfile fa riferimento alle variabili nel file .env con le variabili di ambiente configurate per il corretto funzionamento del sistema. Si ricorda che, avendo sviluppato l'applicazione fuori dal container, una volta dentro Docker i servizi di rete vengono gestiti automaticamente tramite l'hostname e non più l'indirizzo IPv4 localhost (127.0.0.1).
 Il Dockerfile prende alcuni accorgimenti: runnare da utente privo di privilegi di root e installare, in modo deterministico, le dipendenze presenti nel <i>package.json</i>. 
 ```bash
@@ -504,12 +504,12 @@ src
 #### 4.2 PostgreSQL
 ##### 4.2.1 Migration and Seed
 Si è scelto di utilizzare le migrazioni per gestire le modifiche al database, invece del metodo `sync()`, in modo da tenere traccia delle modifiche al database nel tempo, facilitando il rollback a versioni precedenti.
-Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato. Di conseguenza, si è aggiunto il parametro  ``` "resolveJsonModule": true, ``` all'interno del <i>tsconfig.js</i> per gestire i file JSON contenenti lo stato del gioco per effettuare i seed iniziali. Nel path della migrazione e del seed va specificato il path assoluto della cartella relativa alle migrazioni e ai seed, non quello relativo.
+Inoltre, è stato creato un seed iniziale del database con dei valori di partenza per effettuare i test in modo deterministico ed accurato. Di conseguenza, si è aggiunto il parametro  ``` "resolveJsonModule": true, ``` all'interno del <i>tsconfig.js</i> per gestire i file JSON contenenti lo stato del gioco per effettuare i seed iniziali. Nel path della migrazione e del seed va specificato il path assoluto della cartella relativa alle migrazioni e ai seed, non quello relativo (per quanto riguarda lo sviluppo dell'app).
 Di seguito è riportata la tabella relativa le migrazioni.
 
 ![image](https://github.com/user-attachments/assets/4fb2179d-f54c-4d44-94fa-6ab0f3dadb8f)
 
-Le migrazioni ed i seed si eseguono tutti in automatico una volta lanciata l'app di sviluppo con il comando ```npm run dev``` se e solo se la tabella appena mostrata è vuota. Per effettuare un <i>undo</i> delle migrazioni e dei seed si è scelta la via manuale: si eliminano direttamente da Adminer le tabelle <i>games</i> e <i>users</i> e tutto il contenuto della tabella relativa la migrazione. Una volta rilanciata l'app si effettuano nuovamente le migrazioni e i seed.
+Le migrazioni ed i seed si eseguono tutti in automatico una volta lanciata l'app di sviluppo con il comando ```npm run dev``` se e solo se la tabella appena mostrata è vuota. Per effettuare un <i>undo</i> delle migrazioni e dei seed si è scelta la via manuale: si eliminano direttamente da Adminer le tabelle <i>games</i> e <i>users</i> e tutto il contenuto della tabella relativa la migrazione. Una volta rilanciata l'app si effettuano automaticamente le migrazioni e i seed.
 
 ##### 4.2.2 Adminer
 Come accennato nella sezione relativa a Docker, è stato utilizzato un tool per il management del database, Adminer. Questa scelta implementativa è dovuta sia alla necessità di avere a disposizione una rapida visualizzazione dei dati in Postgres durante lo sviluppo ed i test, sia per avere una interfaccia grafica leggera per controllare lo stato del db in produzione.
@@ -930,6 +930,31 @@ Per lanciare l'esecuzione della collection:
 newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 ```
 Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti.
+
+#### Nota sui seed e migrazioni in produzione
+L'app prevede chee all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed in <i>.js</i>:
+
+```bash
+const MIGRATION_PATH: string  = process.env.NODE_ENV === 'production'
+  ? './build/migrations/*.js'
+  : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/migrations/*.ts'
+const SEED_PATH: string = process.env.NODE_ENV === 'production'
+  ? './build/seeds/*.js'
+  : '/home/luca/progetto_PA/Progetto-Programmazione-Avanzata/src/seeds/*.ts'
+```
+
+Inoltre, è stato copiato il contenuto della cartella con le partite salvate con cui alimentare il db nello stato iniziale:
+
+```bash
+cp -r src/saved_games/ build/
+```
+
+La valutazione della variabile a "production" è garantita dal Dockerfile: ```ENV NODE_ENV production```, infatti:
+```bash
+docker exec -it CONATIENR_ID bash
+node@CONATIENR_ID:/usr/src/app$ echo $NODE_ENV
+production
+```
 
 ### 7.3 Ulteriori test (VSCode Rest client, node:test e supertest)
 Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è si può creare una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
