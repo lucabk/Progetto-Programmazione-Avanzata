@@ -605,6 +605,8 @@ Si considerano tre tipi di utente:
 - Utente autenticato con JWT che interagisce con il gioco
 - Utente non autenticato che effettua il login per ricevere il token JWT
 - Admin che si occupa di ricaricare il credito (tokens) degli utenti giocatori
+  
+Di seguito si riporta il diagramma che rappresenta i casi d'uso.
 
 <img alt="Use Case Diagram" src="./UML/PA-Use Case Diagram.drawio.png" width="70%">
 
@@ -614,10 +616,10 @@ Si considerano tre tipi di utente:
 <img alt="Interaction Overview Diagram" src="./UML/PA-Interaction Overview Diagram.drawio.png">
 
 #### 5.2.3 Sequence Diagram
-In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica.
+In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica; inoltre, i middleware sono rappresentati con linee verticali tratteggiate.
 
 #### 5.2.3.1 Login
-La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
+La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT, una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
 ```bash
 {
     "username":"user1@example.com",
@@ -625,11 +627,11 @@ La rotta per il login è stata aggiunta opzionalmente per facilitare la creazion
 }
 ```
 
-<img alt="Login" src="./UML/PA-Login.drawio.png">
+<img alt="Login" src="./UML/PA-Login.drawio.png" width="60%">
 
 
 ##### 5.2.3.2 Create game
-La creazione di una partita prevede un utente autenticato mediante JWT che fornisce un body dalle seguenti caratteristiche:
+La creazione di una partita prevede un utente autenticato mediante JWT che fornisce il livello di difficoltà dell'IA, tramite un body dalle seguenti caratteristiche:
 ```bash
 {
     "difficulty": 1
@@ -644,7 +646,7 @@ L'utente autenticato viene poi verificato se appartenente agli user memeorizzati
 Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fornire un req.body che rispetti questo formato:
 ```bash
 {
-    "origin":20,
+    "origin": 20,
     "destination": 24,
     "gameId": 3
 }
@@ -661,7 +663,7 @@ Questa richiesta prevede sempre un client autenticato, ma non prevede un payload
 
 
 ##### 5.2.3.5 Get status
-Il controllo della chain-of-responsability è analogo al caso precedente, ma ciò che si ritorna è lo stato del gioco (vittoria, sconfitta, pareggio, abbandono o in gioco).
+Il controllo della chain-of-responsability è analogo al caso precedente, ma ciò che si ritorna è lo stato del gioco, che può essere: vittoria, sconfitta, pareggio, abbandono o in corso.
 
 <img alt="Get status" src="./UML/PA-Get_Status.drawio.png">
 
@@ -682,8 +684,8 @@ Affinché l'operazione vada a buon fine si fa un controllo sullo user, sulla dis
 L'ultimo caso riguarda l'Admin che effettua una ricarica dei tokens ai vari user. L'utente quindi deve essere autenticato mediante JWT e, innanzitutto, fornire un payload con le seguenti caratteristiche:
 ```bash
 {
-    "username":"user2@example.com",
-    "tokens":23
+    "username": "user2@example.com",
+    "tokens": 23
 }
 ```
 Successivamente si verifica se l'utente è nella banca dati, se è un admin e se esiste lo user da ricaricare. Si restituisce il nuovo valore di token dello user.
