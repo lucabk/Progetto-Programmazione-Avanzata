@@ -609,27 +609,94 @@ La rotta per il login è stata aggiunta opzionalmente per facilitare la creazion
   
 ## 6 - DESIGN PATTERN UTILIZZATI
 ### 6.1 MVC (Model-View-Controller)
-Il progetto utilizza il pattern MVC per organizzare il codice del backend. Questo approccio offre numerosi vantaggi:
+Il progetto utilizza il pattern MVC per organizzare il codice del backend. Il modello si concentra sulla logica di business, mentre il controller si occupa di gestire e rispondere alle azioni dell'utente aggiornando il modello; il terzo componente (View) in questo caso è assente perché rientra nelle caratteristiche dello sviluppo front-end, può essere, ad esempio, implementato in React.
 
-- Manutenibilità: Separazione delle responsabilità tra modelli, controller e router, facilitando le modifiche e la gestione del codice.
-- Testabilità: Ogni componente può essere testato separatamente, migliorando la qualità del software.
-- Riutilizzabilità: Componenti come modelli e controller possono essere riutilizzati in diverse parti dell'applicazione.
-- Scalabilità: La struttura facilita l'aggiunta di nuove funzionalità senza compromettere l'architettura esistente.
-- Chiarezza e Organizzazione: Il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
+![image](https://github.com/user-attachments/assets/ea3022c6-28c5-4c94-9133-6850b2e91dd8)
+<i>Figure 8-1. MVC pattern, Learning Javasctipt Design Patterns - Addy Osmani (II ed)</i>
+
+Si ha quindi una separazione delle responsabilità tra modelli, controller e router, facilitando le modifiche e la gestione del codice. In più si sottolineano altri vantaggi: ogni componente può essere testato separatamente, migliorando la qualità del software; i componenti come modelli e controller possono essere riutilizzati in diverse parti dell'applicazione; la struttura facilita l'aggiunta di nuove funzionalità senza compromettere l'architettura esistente; il codice è più leggibile e organizzato, rendendo più facile la documentazione e la comprensione del flusso dell'applicazione.
 
 ### 6.2 Singleton
-Il progetto utilizza il pattern Singleton per gestire la connessione al database. Questo approccio offre numerosi vantaggi:
+Il progetto utilizza il pattern Singleton per gestire la connessione al database. Il Singleton è un pattern creazionale che assicura che una classe abbia una sola istanza, garantendo un accesso globale a tale istanza. Inoltre, questo permette di centralizzare la gestione della connessione al database, rendendo il codice più facile da mantenere e aggiornare. Il codice per la connessione al db è riportato di seguito.
 
-- Istanza Unica: Garantisce che ci sia una sola istanza di Sequelize in tutta l'applicazione, evitando problemi di concorrenza e migliorando l'efficienza.
-- Punto di Accesso Globale: La costante sequelize è accessibile globalmente attraverso l'importazione nei modelli, facilitando la gestione della connessione al database.
-- Manutenibilità: Centralizza la gestione della connessione al database, rendendo il codice più facile da mantenere e aggiornare.
+  ```bash
+  class Database {
+  private static instance: Sequelize;
+
+  private constructor() {}
+
+  public static getInstance(): Sequelize {
+    if (!Database.instance) {
+      // Create a new instance of Sequelize using the database URL from environment variables
+      Database.instance = new Sequelize(DATABASE_URL as string, {
+        dialect: 'postgres',
+      });
+    }
+    return Database.instance;
+  }
+}
+  ```
 
 ### 6.3 Factory
-Il progetto utilizza il pattern Factory per la gestione degli errori. Questo approccio offre numerosi vantaggi:
+Il progetto utilizza il pattern Factory per la gestione degli errori. La factory è un design pattern di tipo creazionale che permette, tramite una interfaccia comune, di creare oggetti in una superclasse, ma garantendo la possibilità alle sotto-class di alterare l'oggetto da crerare. In questo modo, la logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione. In aggiunta, permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza. Infine, migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori, effettuata tramite middleware.
 
-- Centralizzazione della Logica di Creazione: La logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione.
-- Flessibilità: Permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza.
-- Chiarezza e Organizzazione: Migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori.
+```bash
+import { StatusCodes } from "http-status-codes";
+
+interface ErrorMsg{
+    get msg():string
+    get statusCode():number
+}
+class GenericError implements ErrorMsg{
+    protected _statusCode:number
+    protected _msg:string
+
+    constructor(msg:string, statusCode:number){
+        this._msg=msg
+        this._statusCode=statusCode
+    }
+    get statusCode(){
+        return this._statusCode
+    }
+    get msg(){
+        return this._msg
+    }
+}
+
+class BadRequestError extends GenericError{}        //400
+class UnauthorizedError extends GenericError{}      //401
+class ForbiddenError extends GenericError{}         //403
+class NotFoundError extends GenericError{}          //404
+class InternalServerError extends GenericError{}    //500
+
+class ErrorFactory {
+    constructor(){}
+    getError(code:StatusCodes, msg:string):ErrorMsg{
+        let retval:ErrorMsg
+        switch(code){
+            case StatusCodes.NOT_FOUND:
+                retval = new NotFoundError(msg, code)
+                break
+            case StatusCodes.UNAUTHORIZED:
+                retval = new UnauthorizedError(msg, code)
+                break
+            case StatusCodes.INTERNAL_SERVER_ERROR:
+                retval = new InternalServerError(msg, code)
+                break
+            case StatusCodes.FORBIDDEN:
+                retval = new ForbiddenError(msg, code)
+                break
+            case StatusCodes.BAD_REQUEST:
+                retval = new BadRequestError(msg, code)
+                break
+            default:
+                throw new Error(`Factory Error: Unhandled status code: ${code}`)
+        }
+        return retval
+    }
+}
+```
+
 
 ### 6.4 COR
 Il progetto utilizza il pattern Chain Of Responsibility (COR) per gestire il flusso dei middleware. Questo approccio offre numerosi vantaggi:
@@ -698,6 +765,7 @@ quitGame
 
 ####  Riferimenti
 - Pattern: https://github.com/manciniadriano/pa2021/tree/main/pattern
+- Learning Javasctipt Design Patterns - Addy Osmani (II ed)
   
 
 ## 7 - TEST e AVVIO DELL'APP
