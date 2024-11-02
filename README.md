@@ -590,21 +590,37 @@ In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in
 | POST       | /api/game/play        | Yes          | Yes     |
 | GET        | /api/game/history/:id | Yes          | No      |
 | GET        | /api/game/status/:id  | Yes          | No      |
-| PUT        | /api/quit             | Yes          | Yes     |
+| PUT        | /api/game/quit        | Yes          | Yes     |
 | PUT        | /api/refill           | Yes          | Yes     |
 
 
 ### 5.2 UML
+In questa sezione vi sono i diagrammi UML, in particolare:
+- Use Case Diagram
+- Interaction Overview Diagram
+- Sequence Diagram
+
+#### 5.2.1 Use Case Diagram
+
+#### 5.2.2 Interaction Overview Diagram
+
+#### 5.2.3 Sequence Diagram
 In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta.
 
-#### 5.2.1 Login
+#### 5.2.3.1 Login
 La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale).
-#### 5.2.2 Create game
-#### 5.2.3 Make move
-#### 5.2.4 Get history
-#### 5.2.5 Get status
-#### 5.2.6 Quit
-#### 5.2.7 Refill
+
+##### 5.2.3.2 Create game
+
+##### 5.2.3.3 Make move
+
+##### 5.2.3.4 Get history
+
+##### 5.2.3.5 Get status
+
+##### 5.2.3.6 Quit
+
+##### 5.2.3.7 Refill
 
   
 ## 6 - DESIGN PATTERN UTILIZZATI
