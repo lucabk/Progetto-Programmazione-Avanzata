@@ -932,7 +932,7 @@ newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti.
 
 #### Nota sui seed e migrazioni in produzione
-L'app prevede chee all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed in <i>.js</i>:
+L'app prevede che all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed in <i>.js</i>:
 
 ```bash
 const MIGRATION_PATH: string  = process.env.NODE_ENV === 'production'
@@ -951,8 +951,8 @@ cp -r src/saved_games/ build/
 
 La valutazione della variabile a "production" è garantita dal Dockerfile: ```ENV NODE_ENV production```, infatti:
 ```bash
-docker exec -it CONATIENR_ID bash
-node@CONATIENR_ID:/usr/src/app$ echo $NODE_ENV
+docker exec -it CONTAINER_ID bash
+node@CONTAINER_ID:/usr/src/app$ echo $NODE_ENV
 production
 ```
 
