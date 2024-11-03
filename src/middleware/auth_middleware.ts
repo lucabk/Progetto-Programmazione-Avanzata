@@ -39,18 +39,26 @@ export const getUserById = async (req: express.Request, _res: express.Response, 
   console.log('getUserById')
   // req.decodedToken = { username, id }
   const jwt: JwtPayload = req.decodedToken as JwtPayload
+  // Check if id is present and valid
   if(!jwt.id || isNaN(parseInt(jwt.id as string))){
     const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'missing user id')
     next(error)
     return
   }
+   // Check if username is present
+  if(!jwt.username){
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'missing username')
+    next(error)
+    return
+  }
 
   const userId:number = parseInt(jwt.id as string)
+  const username:string = jwt.username as string
 
   //find user by id and check if user exists
   const user = await User.findByPk(userId)
-  if(!user){
-    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'no user found')
+  if(!user || user.username !== username){
+    const error:ErrorMsg = factory.getError(StatusCodes.UNAUTHORIZED, 'user not found')
     next(error)
     return
   }

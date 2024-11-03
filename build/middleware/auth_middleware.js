@@ -52,16 +52,24 @@ const getUserById = (req, _res, next) => __awaiter(void 0, void 0, void 0, funct
     console.log('getUserById');
     // req.decodedToken = { username, id }
     const jwt = req.decodedToken;
+    // Check if id is present and valid
     if (!jwt.id || isNaN(parseInt(jwt.id))) {
         const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'missing user id');
         next(error);
         return;
     }
+    // Check if username is present
+    if (!jwt.username) {
+        const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'missing username');
+        next(error);
+        return;
+    }
     const userId = parseInt(jwt.id);
+    const username = jwt.username;
     //find user by id and check if user exists
     const user = yield models_1.User.findByPk(userId);
-    if (!user) {
-        const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'no user found');
+    if (!user || user.username !== username) {
+        const error = errorFactory_1.factory.getError(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'user not found');
         next(error);
         return;
     }
