@@ -62,7 +62,7 @@ Se si ha una sola distribuzione Linux installata, basta eseguire il comando:
    ```
 per lanciare la macchina. 
 
-Se si hanno più distribuzioni installate e si desidera specificare quale avviare, si lancia il comando  ```bash wsl -d <Distribution Name> ```.
+Se si hanno più distribuzioni installate e si desidera specificare quale avviare, si lancia il comando  ``` wsl -d <Distribution Name> ```.
 Alcuni comandi possono risultare utili: 
 - controllare le distribuzioni installate: ```bash wsl -l -v  ```
 - Status WSL: ```bash wsl --status ```
@@ -207,7 +207,7 @@ Da qui si creerà il file package.json. Nella macchina WSL è gia installato Typ
 ```
 Il "compilatore" nativo di Typescript permettera la traduzione del codice con il comando ```tsc``` che, ad ogni modo, per coerenza nello sviluppo verrà integrato negli script del package.json.
 
- ```bash
+ ```json
   "scripts": {
     "tsc": "tsc"
   },
@@ -233,7 +233,7 @@ npm install --save-dev ts-node-dev
 ```
 che verrà anche aggiunto tra gli script:
 
- ```bash
+ ```json
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts"
@@ -252,7 +252,7 @@ npm install --save-dev eslint @eslint/js typescript-eslint @stylistic/eslint-plu
 ```
 Si aggiornano gli script per facilitarne l'utilizzo:
 
- ```bash
+ ```json
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
@@ -265,7 +265,7 @@ Per abilitare le regole si crea un file, nella root del progetto, denominato: es
 
 Si aggiunge anche uno script per lanciare il programma in production mode:
 
- ```bash
+ ```json
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
@@ -596,7 +596,7 @@ In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in
 #### JWT payload
 Il payload del JWT è utilizzato unicamente per garantire l'autenticazione e l'autorizzazione delle richieste HTTP; quindi, è così fatto:
 
-```bash
+```json
 {
     "username" : "username_value",
     "password" : "password_value"
@@ -629,7 +629,7 @@ In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il compo
 
 #### 5.2.3.1 Login
 La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT, una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
-```bash
+```json
 {
     "username":"user1@example.com",
     "password":"password1"
@@ -641,7 +641,7 @@ La rotta per il login è stata aggiunta opzionalmente per facilitare la creazion
 
 ##### 5.2.3.2 Create game
 La creazione di una partita prevede un utente autenticato mediante JWT che fornisce il livello di difficoltà dell'IA, tramite un body dalle seguenti caratteristiche:
-```bash
+```json
 {
     "difficulty": 1
 }
@@ -653,7 +653,7 @@ L'utente autenticato viene poi verificato se appartenente agli user memeorizzati
 
 ##### 5.2.3.3 Make move
 Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fornire un req.body che rispetti questo formato:
-```bash
+```json
 {
     "origin": 20,
     "destination": 24,
@@ -664,6 +664,7 @@ Si verifica quindi che sia l'utente che l'id del gioco siano effettivamente pres
 
 <img alt="Make move" src="./UML/PA-Make_Move.drawio.png">
 
+Seguendo questa implementazione è chiaro come i token vadano in negativo durante la partita. Questa caratteristica deve essere tenuta in considerazione dall'admin che va ad effettuare la ricarica dei crediti.
 
 ##### 5.2.3.4 Get history
 Questa richiesta prevede sempre un client autenticato, ma non prevede un payload da inviare. Il gioco di cui richiedere le mosse eseguite si specifica direttamente nella URL. Si verifica se lo user è presente nel database, si controlla se ha un numero di tokens almeno pari a zero e se il gioco richiesto esiste nello storico e se è da lui creato. Infine, si resituiscono le mosse giocate.
@@ -679,7 +680,7 @@ Il controllo della chain-of-responsability è analogo al caso precedente, ma ci�
 
 ##### 5.2.3.6 Quit Game
 In caso di abbandono l'utente deve essere autenticato e deve fornire il payload con il corretto id del gioco da abbandonare:
-```bash
+```json
 {
     "gameId" : 6
 }
@@ -691,15 +692,17 @@ Affinché l'operazione vada a buon fine si fa un controllo sullo user, sulla dis
 
 ##### 5.2.3.7 Refill
 L'ultimo caso riguarda l'Admin che effettua una ricarica dei tokens ai vari user. L'utente quindi deve essere autenticato mediante JWT e, innanzitutto, fornire un payload con le seguenti caratteristiche:
-```bash
+```json
 {
     "username": "user2@example.com",
-    "tokens": 23
+    "tokens": 20
 }
 ```
 Successivamente si verifica se l'utente è nella banca dati, se è un admin e se esiste lo user da ricaricare. Si restituisce il nuovo valore di token dello user.
 
 <img alt="Refill" src="./UML/PA-Refill.drawio.png">
+
+Ulteriori sviluppi potrebbero considerare l'opportunità di creare e visualizzare utenti, oppure di aggiornarne le credenziali. Questi approcci possono prendere spunto da un'altra <a href="https://github.com/lucabk/Full-Stack-Open/blob/2b6a95479dfb63e65882d8eec20eb4c011128891/part_13/src/controllers/userController.ts">repository</a> appartenente al sottoscritto.
 
 
 ## 6 - DESIGN PATTERN UTILIZZATI
@@ -894,7 +897,7 @@ docker-compose up --build
 
 Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata scaricata la collection e bisogna creare il file delle variabili di ambiente in formato <i>.json</i>. Il file delle variabili deve essere così fatto:
 
-```bash
+```json
 {
     "id": "e9103b34-ce86-4694-b7f7-60469f10e158",
 	"name": "PA2024",
