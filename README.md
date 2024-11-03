@@ -593,6 +593,15 @@ In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in
 | PUT        | /api/game/quit        | Yes          | Yes     |
 | PUT        | /api/refill           | Yes          | Yes     |
 
+#### JWT payload
+Il payload del JWT è utilizzato unicamente per garantire l'autenticazione e l'autorizzazione delle richieste HTTP; quindi, è così fatto:
+
+```bash
+{
+    "username" : "username_value",
+    "password" : "password_value"
+}
+```
 
 ### 5.2 UML
 In questa sezione vi sono i diagrammi UML, in particolare:
@@ -616,7 +625,7 @@ Di seguito si riporta il diagramma che rappresenta i casi d'uso.
 <img alt="Interaction Overview Diagram" src="./UML/PA-Interaction Overview Diagram.drawio.png">
 
 #### 5.2.3 Sequence Diagram
-In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica; inoltre, i middleware sono rappresentati con linee verticali tratteggiate.
+In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware e le funzioni di appoggio, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica; inoltre, i middleware sono rappresentati con linee verticali tratteggiate.
 
 #### 5.2.3.1 Login
 La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT, una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
@@ -918,6 +927,12 @@ Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata 
 			"key": "TOKENGAMEADMIN",
 			"value": "",
 			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "KEY",
+			"value": "mysecretkey",
+			"type": "default",
 			"enabled": true
 		}
     ]
