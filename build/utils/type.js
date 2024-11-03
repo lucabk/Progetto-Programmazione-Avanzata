@@ -37,7 +37,7 @@ exports.newUserSchema = zod_1.z.object({
 });
 //create game validation
 exports.newGameSchema = zod_1.z.object({
-    difficulty: zod_1.z.number().nonnegative().max(10).int() //alpha-beta max depth
+    difficulty: zod_1.z.number().min(1).max(10).int() //alpha-beta max depth
 });
 //make a move validation
 exports.newMoveSchema = zod_1.z.object({
