@@ -26,6 +26,7 @@ La scacchiera è disegnata in modo tale che solo le caselle nere, le uniche occu
 |    |  24 |    |  25 |    |  26 |    |  27 |
 |  28|     |  29|     |  30|     |  31|     |
 
+#### Rappresentazione delle pedine
 Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine nere a forma di cerchio (in alto nella scacchiera); la disposizione di partenza delle pedine è rappresentata nella seguente figura.
 
 |    |  o  |    |  o  |    |  o  |    |  o  |
@@ -55,7 +56,7 @@ Installazione WSL con Ubuntu.
    wsl --install
    ```
 
-Per installare una distribuzione in particolare si usa il comando  ```bash wsl --install <Distribution Name> ```; la lista delle distribuzioni si ottiene lanciando:  ```bash wsl --list --online   ```.
+Per installare una distribuzione in particolare si usa il comando  ``` wsl --install <Distribution Name> ```; la lista delle distribuzioni si ottiene lanciando:  ``` wsl --list --online   ```.
 Se si ha una sola distribuzione Linux installata, basta eseguire il comando:
  ```bash
    wsl 
@@ -64,18 +65,18 @@ per lanciare la macchina.
 
 Se si hanno più distribuzioni installate e si desidera specificare quale avviare, si lancia il comando  ``` wsl -d <Distribution Name> ```.
 Alcuni comandi possono risultare utili: 
-- controllare le distribuzioni installate: ```bash wsl -l -v  ```
-- Status WSL: ```bash wsl --status ```
-- Aggiornamento WSL: ```bash wsl --update ```
-- Controllo versione WSL ```bash wsl --version ```
-- Arresto della macchina Linux su WSL ```bash wsl --shutdown ```
+- controllare le distribuzioni installate: ``` wsl -l -v  ```
+- Status WSL: ``` wsl --status ```
+- Aggiornamento WSL: ``` wsl --update ```
+- Controllo versione WSL ``` wsl --version ```
+- Arresto della macchina Linux su WSL ``` wsl --shutdown ```
 
 
 ### 1.2 VSCode WSL
 Per configurare correttamente Visual Studio Code (VSCode) con WSL bisogna installare il Remote Development extension pack. Aprire VSCode e, facendo riferimento al seguente <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">link</a> per installare le relative estensioni.
 
 E' possibile verificare che le estensioni siano state installate correttamente tramite il comando su PowerShell:
- ```bash ls $HOME\.vscode\extensions\ ```
+ ``` ls $HOME\.vscode\extensions\ ```
 
 Successivamente avviare Ubuntu per aggiornare i repository e installare "wget" 
 ```bash 
@@ -893,7 +894,7 @@ DATABASE_URL_PROD=postgres://postgres:postgres@db:5432/postgres
 
 Ovviamente è necessario un ambiente Docker installato sulla propria macchina. Quindi si può avviare il servizio con:
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 Successivamente, ci si può spostare nella cartella <i>newman</i> dove è stata scaricata la collection e bisogna creare il file delle variabili di ambiente in formato <i>.json</i>. Il file delle variabili deve essere così fatto:
