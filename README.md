@@ -650,6 +650,7 @@ L'utente autenticato viene poi verificato se appartenente agli user memeorizzati
 
 <img alt="Create game" src="./UML/PA-Create_Game.drawio.png">
 
+La difficoltà è relazionata alla profondità con cui l'algoritmo alpha-beta esplora l'albero dello spazio degli stati. E' possibile creare una partita con difficoltà che parte da 1 fino ad un massimo di 10, per non rallentare eccessivamente il gioco durante l'esecuzione dell'algoritmo di pruning associato alla libreria.
 
 ##### 5.2.3.3 Make move
 Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fornire un req.body che rispetti questo formato:
