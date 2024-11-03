@@ -949,7 +949,7 @@ Per lanciare l'esecuzione della collection:
 ```bash
 newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 ```
-Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti.
+Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti. Si ricorda che Newman va <a href="https://support.postman.com/hc/en-us/articles/115003703325-How-to-install-Newman">installato</a> ed ha npm come prerequisito.
 
 #### Nota sui seed e migrazioni in produzione
 L'app prevede che all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed in <i>.js</i>:
