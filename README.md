@@ -13,6 +13,8 @@ Si riportano dei richiami sulle caratteristiche della dama inglese al fine di pe
 - Promozione a Re: Quando un pezzo raggiunge il lato opposto della scacchiera, viene promosso a "re". I re possono muoversi e catturare sia in avanti sia indietro.
 - Fine del Gioco: Il gioco termina quando un giocatore cattura tutti i pezzi avversari, blocca tutte le sue mosse, oppure l'avversario si arrende. In mancanza di mosse per entrambi, si dichiara un pareggio.
 
+Il progetto prevede l'utilizzo della liberia <a href="https://github.com/loks0n/rapid-draughts">rapid-draughts</a>.
+
 #### Rappresentazione della scacchiera
 La scacchiera è disegnata in modo tale che solo le caselle nere, le uniche occupabili, abbiano un numero che le rappresenti; quindi, per effettuare una mossa si specifica la casella di origine e quella di destinazione indicando rispettivamente i propri numeri.
 
@@ -27,7 +29,7 @@ La scacchiera è disegnata in modo tale che solo le caselle nere, le uniche occu
 |  28|     |  29|     |  30|     |  31|     |
 
 #### Rappresentazione delle pedine
-Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine nere a forma di cerchio (in alto nella scacchiera); la disposizione di partenza delle pedine è rappresentata nella seguente figura.
+Il giocatore si vedrà assegnata la prima mossa del gioco con le pedine nere a forma di cerchio (in alto nella scacchiera). La disposizione di partenza delle pedine è rappresentata nella seguente figura.
 
 |    |  o  |    |  o  |    |  o  |    |  o  |
 |----|-----|----|-----|----|-----|----|-----|
@@ -64,7 +66,7 @@ Se si ha una sola distribuzione Linux installata, basta eseguire il comando:
 per lanciare la macchina. 
 
 Se si hanno più distribuzioni installate e si desidera specificare quale avviare, si lancia il comando  ``` wsl -d <Distribution Name> ```.
-Alcuni comandi possono risultare utili: 
+Si elencano alcuni comandi che possono risultare utili: 
 - controllare le distribuzioni installate: ``` wsl -l -v  ```
 - Status WSL: ``` wsl --status ```
 - Aggiornamento WSL: ``` wsl --update ```
@@ -73,33 +75,33 @@ Alcuni comandi possono risultare utili:
 
 
 ### 1.2 VSCode WSL
-Per configurare correttamente Visual Studio Code (VSCode) con WSL bisogna installare il Remote Development extension pack. Aprire VSCode e, facendo riferimento al seguente <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">link</a> per installare le relative estensioni.
+Per configurare correttamente Visual Studio Code (VSCode) con WSL bisogna installare il Remote Development extension pack. Aprire VSCode e, facendo riferimento al seguente <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">link</a>, installare le relative estensioni.
 
 E' possibile verificare che le estensioni siano state installate correttamente tramite il comando su PowerShell:
  ``` ls $HOME\.vscode\extensions\ ```
 
-Successivamente avviare Ubuntu per aggiornare i repository e installare "wget" 
+Successivamente avviare Ubuntu (WSL) per aggiornare i repository 
 ```bash 
 sudo apt-get update
 ```
 
-e la verifica dei certificati SSL
+e installare "wget" e la verifica dei certificati SSL
 ```bash 
 sudo apt-get install wget ca-certificates
 ```
 
-Per installre VSCode e aprire un progetto dalla distribuzione WSL, aprire la riga di comando della distribuzione ed immettere:
+Per installre VSCode e aprire un progetto dalla distribuzione WSL, lanciare da riga di comando:
 ```bash 
  cd $HOME && mkdir pa2024 && code pa2024
 ```
 
-Una volta aperto VSCode, nella shell, seguire la figura: il risultato dovrebbere essere analogo, con in basso a sx nella schermata VSCode la scritta WSL:Ubuntu:
+Una volta aperto VSCode, nella shell dell'IDE seguire i comandi della figura: il risultato dovrebbere essere analogo; in basso a ssinistra dell'Editor dovrebbe essere visualizzata la scritta <i>WSL:Ubuntu:</i> , ad indicare la corretta connessione tra VSCode e la WSL Ubuntu.
 
 
 ![image](https://github.com/user-attachments/assets/54006e65-4236-4463-9fff-fb6eef4364b5)
 
 
-N.B. Verificare che siano rispettati i System Requirements.
+N.B. Verificare che siano rispettati i System Requirements per utilizzare WSL.
 
 
 ### 1.3 Git
@@ -117,7 +119,7 @@ Impostare la propria email con questo comando:
 ```bash
 git config --global user.email "youremail@domain.com"
 ```
-. Se è necessario modificare la configurazione Git, è possibile usare un editor di testo integrato come Nano: ```bash nano ~/.gitconfig ```.
+Nel caso fosse necessario modificare la configurazione Git, è possibile usare un editor di testo integrato come Nano: ```bash nano ~/.gitconfig ```.
 
 
 ### 1.4 Docker
@@ -146,7 +148,7 @@ N.B. Per lanciare i comandi Docker servono i privilegi da superUser (<i>sudo</i>
 
 
 ### 1.5 Node.js
-Si sconsiglia di installare Node.js direttamente dal gestore di pacchetti Linux perché la versione di Node che può essere installata con il comando apt-get di Ubuntu è attualmente <a href="https://learn.microsoft.com/it-it/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm">obsoleta</a>. Si fa riferimento alla <a href="https://nodejs.org/en/download/package-manager">guida ufficiale</a> per l'installazione di Node.js, su architettura Linux e utilizzando il Node Version Manager (nvm):
+Si sconsiglia di installare Node.js direttamente dal gestore di pacchetti Linux perché la versione di Node che può essere installata con il comando apt-get di Ubuntu è attualmente <a href="https://learn.microsoft.com/it-it/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm">obsoleta</a>. Si fa riferimento alla <a href="https://nodejs.org/en/download/package-manager">guida ufficiale</a> per l'installazione di Node.js su architettura Linux, utilizzando il Node Version Manager (nvm):
 ```bash
 # installs nvm (Node Version Manager)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
@@ -172,10 +174,10 @@ Newman è uno strumento a riga di comando che permette di eseguire le collezioni
 ```bash
 $ npm install -g newman
 ```
-La versione di Node deve essere almeno la 16. Prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
+La versione di Node deve essere almeno la 16, prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
 
 #### 1.6.3 Scaricare le collection e le variabili di ambiente
-Una volta create le collection su Postman tramite browser del sitema host (Windows) si devono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata la Collection access key. Si apre la collection sull'app Postman, si clicca su share (in alto a dx), si seleziona via API e si copia il contenuto. La creazione della chiave risulterà anche nel profilo personale: dal browser dirigerersi all'<a href="https://www.postman.com/">indirizzo</a>, cliccare sulla propria icona in alto a destra>settings>API keys (nella barra di ricerca laterale). Si può quindi scaricare, all'interno della cartella <i>newman</i>, la collection con il comando:
+Una volta create le collection su Postman (tramite browser del sitema host (Windows) o direttamente sull'App) si possono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata la Collection access key. Si apre la collection sull'app Postman, si clicca su share (in alto a dx), si seleziona via API e si copia il contenuto. La creazione della chiave risulterà anche nel profilo personale: dal browser dirigerersi all'<a href="https://www.postman.com/">indirizzo</a>, cliccare sulla propria icona in alto a destra>settings>API keys (nella barra di ricerca laterale). Si può quindi scaricare, all'interno della cartella <i>newman</i>, la collection con il comando:
 ```bash
 curl -X GET "COLLECTION_KEY" -o collection.json
 ```
@@ -221,8 +223,8 @@ Adesso si può creare il file di configurazione di Typescript (TS): tsconfig.jso
 Si ricorda che, per non dare errori, Typescript si aspetta almeno un file .ts nella propria cartella. La configurazione del file tsconfig.js avrà le seguenti caratteristiche:
 ![image](https://github.com/user-attachments/assets/55021a73-2300-4dc3-a5ca-5588ebe17392)
 
-Il file JS che verrà realizzato andrà dunque salvato in un'apposita cartella (da creare) nella root del progetto, denominata "build". 
-In seguito, dato che il progetto si occuperà dello sviluppo di un'applicazione backend in TS si utilizzerà la libreria Express e la sua tipizzazione:
+Il codice JS che verrà generato da TS andrà dunque salvato in un'apposita cartella (da creare) nella root del progetto, denominata "build". 
+In seguito, dato che il progetto si occuperà dello sviluppo di un'applicazione backend in TS, si utilizzerà la libreria Express e la sua tipizzazione:
 ```bash
 npm install express
 npm install --save-dev @types/express
@@ -277,8 +279,10 @@ Si aggiunge anche uno script per lanciare il programma in production mode:
 
 
 ### 2.3 Altri pacchetti
+In questa sezione vengono elencate le varie altre librerie utilizzate nello sviluppo del progetto.
+
 #### 2.3.1 rapid-draughts
-Libreria per il gioco della dama.
+Innanzitutto, si installa la libreria per il gioco della dama.
 ```bash
 npm install rapid-draughts
 ```
@@ -568,6 +572,17 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 2. Si sostituisce alla chiave simmetrica la chiave privata (jwtRS256.key) nella generazione (firma) del token con il metodo <i>.sign()</i>
 3. Si sostituisce alla chiave simmetrica la chiave pubblica (jwtRS256.key.pub) nella verifica del token tramite il metodo <i>.verify()</i>
 
+Per leggere le chiavi dalla memoria di massa del calcolatore si può utilizzare il metodo <i>fs.readFileSync()</i>.
+
+#### JWT payload
+Il payload del JWT è utilizzato unicamente per garantire l'autenticazione e l'autorizzazione delle richieste HTTP; quindi, è così fatto:
+
+```json
+{
+    "username" : "username_value",
+    "password" : "password_value"
+}
+```
 
 ####  Riferimenti
 - Appunti personali <a href="https://guide.univpm.it/af.php?lang=lang-ita&af=248519">corso</a>
@@ -594,15 +609,6 @@ In tabella sono riportate le rotte disponibili. Si ricorda che il server gira in
 | PUT        | /api/game/quit        | Yes          | Yes     |
 | PUT        | /api/refill           | Yes          | Yes     |
 
-#### JWT payload
-Il payload del JWT è utilizzato unicamente per garantire l'autenticazione e l'autorizzazione delle richieste HTTP; quindi, è così fatto:
-
-```json
-{
-    "username" : "username_value",
-    "password" : "password_value"
-}
-```
 
 ### 5.2 UML
 In questa sezione vi sono i diagrammi UML, in particolare:
@@ -626,7 +632,7 @@ Di seguito si riporta il diagramma che rappresenta i casi d'uso.
 <img alt="Interaction Overview Diagram" src="./UML/PA-Interaction Overview Diagram.drawio.png">
 
 #### 5.2.3 Sequence Diagram
-In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware e le funzioni di appoggio, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica; inoltre, i middleware sono rappresentati con linee verticali tratteggiate.
+In questa sezione vi sono i diagrammi UML che spiegano dettagliatamente il comportamento di ogni rotta. I nomi delle variabili dentro i riquadri in alto, in particolare quelli che indicano i middleware e le funzioni di appoggio, diversamente da quanto riportato nel codice (in camelCase), sono scritti in PascalCase per una scelta stilistica. I middleware sono rappresentati con linee verticali tratteggiate.
 
 #### 5.2.3.1 Login
 La rotta per il login è stata aggiunta opzionalmente per facilitare la creazione dei token JWT, una volta forniti username e password corretti di utenti memorizzati nel database (tramite il seed iniziale). Il payload della richiesta prevede per l'appunto le due proprietà sopra citate:
@@ -662,7 +668,7 @@ Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fo
     "gameId": 3
 }
 ```
-Si verifica quindi che sia l'utente che l'id del gioco siano effettivamente presenti nel database, che l'utente sia davvero colui che sta giocando quella partita e che la partita sia ancora in corso; per ogni mossa valida si scala un credito (tokens), nel caso di vittoria si assegna 1 punto. Nel caso in cui la partita sia ancora in corso si resistuisce un array che rappresenta la disposizione della scacchiera (oppure l'ASCII della tavola, se specificato nella query string); se la partita è terminata con quella giocata viene dato il risultato finale, altrimenti si è sbagliata la mossa e si restituiscono quelle possibili.
+Si verifica che sia l'utente che l'id del gioco siano effettivamente presenti nel database, che l'utente sia davvero colui che sta giocando quella partita e che la partita sia ancora in corso; per ogni mossa valida si scala un credito (tokens), nel caso di vittoria si assegna 1 punto. Nel caso in cui la partita sia ancora in corso si resistuisce un array che rappresenta la disposizione della scacchiera (oppure l'ASCII della tavola, se specificato nella query string); se la partita è terminata con quella giocata viene dato il risultato finale, altrimenti si è sbagliata la mossa e si restituiscono quelle possibili.
 
 <img alt="Make move" src="./UML/PA-Make_Move.drawio.png">
 
@@ -738,7 +744,7 @@ Il progetto utilizza il pattern Singleton per gestire la connessione al database
   ```
 
 ### 6.3 Factory
-Il progetto utilizza il pattern Factory per la gestione degli errori. La factory è un design pattern di tipo creazionale che permette, tramite una interfaccia comune, di creare oggetti in una superclasse, ma garantendo la possibilità alle sotto-class di alterare l'oggetto da crerare. In questo modo, la logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione. In aggiunta, permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza. Infine, migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori, effettuata tramite middleware.
+Il progetto utilizza il pattern Factory per la gestione degli errori. La factory è un design pattern di tipo creazionale che permette, tramite una interfaccia comune, di creare oggetti in una superclasse, ma garantendo la possibilità alle sotto-classi di alterare l'oggetto da crerare. In questo modo, la logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione. In aggiunta, permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza. Infine, migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori, effettuata tramite middleware.
 
 ```bash
 import { StatusCodes } from "http-status-codes";
@@ -859,7 +865,7 @@ quitGame
   ├── checkRemainingTokens
   ├── checkGameById
   ├── checkUserOfTheGame
-  └── checkAlreadyQuitted
+  └── checkAlreadyEnded
 ```
 
 
@@ -952,7 +958,7 @@ newman run COLLECTION_NAME.json -e ENV_VARIABLES_NAME.json
 Per testare singole richieste si può accodare il flag: ``` --folder REQUEST_NAME ```. Si  noti come i test valutino lo status code ritornato dalla API e i messaggi ricevuti. Si ricorda che Newman va <a href="https://support.postman.com/hc/en-us/articles/115003703325-How-to-install-Newman">installato</a> ed ha npm come prerequisito.
 
 #### Nota sui seed e migrazioni in produzione
-L'app prevede che all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed in <i>.js</i>:
+L'app prevede che all'avvio, se la tabella delle migrazioni è vuota, effettua sia le migrazioni che i seed, come durante lo sviluppo. In questo caso però si sono forniti i path relativi alle migrazioni e dei seed nella sezione di codice relativa all'avvio del db direttamente in <i>.js</i>:
 
 ```bash
 const MIGRATION_PATH: string  = process.env.NODE_ENV === 'production'
@@ -969,7 +975,7 @@ Inoltre, è stato copiato il contenuto della cartella con le partite salvate con
 cp -r src/saved_games/ build/
 ```
 
-La valutazione della variabile a "production" è garantita dal Dockerfile: ```ENV NODE_ENV production```, infatti:
+La valutazione della variabile ```ENV NODE_ENV``` a "production" è garantita dal Dockerfile: ```ENV NODE_ENV production```, infatti:
 ```bash
 docker exec -it CONTAINER_ID bash
 node@CONTAINER_ID:/usr/src/app$ echo $NODE_ENV
