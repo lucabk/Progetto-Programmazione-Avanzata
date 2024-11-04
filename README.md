@@ -13,7 +13,7 @@ Si riportano dei richiami sulle caratteristiche della dama inglese al fine di pe
 - Promozione a Re: Quando un pezzo raggiunge il lato opposto della scacchiera, viene promosso a "re". I re possono muoversi e catturare sia in avanti sia indietro.
 - Fine del Gioco: Il gioco termina quando un giocatore cattura tutti i pezzi avversari, blocca tutte le sue mosse, oppure l'avversario si arrende. In mancanza di mosse per entrambi, si dichiara un pareggio.
 
-Il progetto prevede l'utilizzo della liberia <a href="https://github.com/loks0n/rapid-draughts">rapid-draughts</a>.
+Il progetto prevede l'utilizzo della libreria <a href="https://github.com/loks0n/rapid-draughts">rapid-draughts</a>.
 
 #### Rappresentazione della scacchiera
 La scacchiera è disegnata in modo tale che solo le caselle nere, le uniche occupabili, abbiano un numero che le rappresenti; quindi, per effettuare una mossa si specifica la casella di origine e quella di destinazione indicando rispettivamente i propri numeri.
@@ -95,7 +95,7 @@ Per installre VSCode e aprire un progetto dalla distribuzione WSL, lanciare da r
  cd $HOME && mkdir pa2024 && code pa2024
 ```
 
-Una volta aperto VSCode, nella shell dell'IDE seguire i comandi della figura: il risultato dovrebbere essere analogo; in basso a ssinistra dell'Editor dovrebbe essere visualizzata la scritta <i>WSL:Ubuntu:</i> , ad indicare la corretta connessione tra VSCode e la WSL Ubuntu.
+Una volta aperto VSCode, nella shell dell'IDE seguire i comandi della figura: il risultato dovrebbe essere analogo; in basso a sinistra dell'Editor dovrebbe essere visualizzata la scritta <i>WSL:Ubuntu:</i> , ad indicare la corretta connessione tra VSCode e la WSL Ubuntu.
 
 
 ![image](https://github.com/user-attachments/assets/54006e65-4236-4463-9fff-fb6eef4364b5)
@@ -177,7 +177,7 @@ $ npm install -g newman
 La versione di Node deve essere almeno la 16, prerequisito soddisfatto se si sono seguiti correttamente i passaggi del paragrafo "1.5 Nodejs".
 
 #### 1.6.3 Scaricare le collection e le variabili di ambiente
-Una volta create le collection su Postman (tramite browser del sitema host (Windows) o direttamente sull'App) si possono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utlizzata la Collection access key. Si apre la collection sull'app Postman, si clicca su share (in alto a dx), si seleziona via API e si copia il contenuto. La creazione della chiave risulterà anche nel profilo personale: dal browser dirigerersi all'<a href="https://www.postman.com/">indirizzo</a>, cliccare sulla propria icona in alto a destra>settings>API keys (nella barra di ricerca laterale). Si può quindi scaricare, all'interno della cartella <i>newman</i>, la collection con il comando:
+Una volta create le collection su Postman (tramite browser del sitema host (Windows) o direttamente sull'App) si possono scaricare per essere utilizzate dalla WSL Ubuntu. Per farlo verrà utilizzata la Collection access key. Si apre la collection sull'app Postman, si clicca su share (in alto a dx), si seleziona via API e si copia il contenuto. La creazione della chiave risulterà anche nel profilo personale: dal browser dirigerersi all'<a href="https://www.postman.com/">indirizzo</a>, cliccare sulla propria icona in alto a destra>settings>API keys (nella barra di ricerca laterale). Si può quindi scaricare, all'interno della cartella <i>newman</i>, la collection con il comando:
 ```bash
 curl -X GET "COLLECTION_KEY" -o collection.json
 ```
@@ -200,15 +200,15 @@ ______________________________________________________________
 
 ## 2 - SETUP DELL'APPLICAZIONE
 ### 2.1 Javascript - Typescript - Express 
-Per creare il progetto si parte dal classico comando di inizalizzazione per sviluppare un'applicazione in Javascript (JS):
+Per creare il progetto si parte dal classico comando di inizializzazione per sviluppare un'applicazione in Javascript (JS):
 ```bash
 npm init
 ```
-Da qui si creerà il file package.json. Nella macchina WSL è gia installato Typescript globalmente, ma è buona norma aggiungerlo alle dipendenze di sviluppo:
+Da qui si creerà il file package.json. Nella macchina WSL è già installato Typescript globalmente, ma è buona norma aggiungerlo alle dipendenze di sviluppo:
 ```bash
  npm install typescript --save-dev
 ```
-Il "compilatore" nativo di Typescript permettera la traduzione del codice con il comando ```tsc``` che, ad ogni modo, per coerenza nello sviluppo verrà integrato negli script del package.json.
+Il "compilatore" nativo di Typescript permetterà la traduzione del codice con il comando ```tsc``` che, ad ogni modo, per coerenza nello sviluppo verrà integrato negli script del package.json.
 
  ```json
   "scripts": {
@@ -249,7 +249,7 @@ npm run dev
 ```
 
 ### 2.2 ESlint e Production mode
-Si utilizzerà anche ESlint per una maggior chiarezza e soldità nello sviluppo:
+Si utilizzerà anche ESlint per una maggior chiarezza e solidità nello sviluppo:
 ```bash
 npm install --save-dev eslint @eslint/js typescript-eslint @stylistic/eslint-plugin  @types/eslint__js
 ```
@@ -288,7 +288,7 @@ npm install rapid-draughts
 ```
 
 #### 2.3.2 Sequelize
-Si installano i pachetti relativi a Postgres, Sequelize e dotenv (per le variabili di ambiente).
+Si installano i pacchetti relativi a Postgres, Sequelize e dotenv (per le variabili di ambiente).
 ```bash
 npm install dotenv pg sequelize
 npm install --save-dev @types/dotenv @types/pg @types/sequelize
@@ -384,7 +384,7 @@ Per lanciare i container si utilizza il comando:
 docker compose up [-d]
 ```
 
-Si possono visualizzare il containerID e le statische di docker con i comandi: ```docker ps``` e ```docker stats```. La connesione al db può essere effetuata sia tramite GUI (Adminer) all'indirizzo http://localhost:8080 della macchina host, oppure tramite il terminale con il comando: ```docker exec -it containerID psql -U user password```. Alcuni comandi utili una volta connessi da terminale sono:
+Si possono visualizzare il containerID e le statistiche di docker con i comandi: ```docker ps``` e ```docker stats```. La connesione al db può essere effettuata sia tramite GUI (Adminer) all'indirizzo http://localhost:8080 della macchina host, oppure tramite il terminale con il comando: ```docker exec -it containerID psql -U user password```. Alcuni comandi utili una volta connessi da terminale sono:
 - ```\l``` elenca i database
 - ```\dt``` elenca le tabelle nel database
 -  ```\d nome_tabella``` elenca gli attributi della tabella specificata
@@ -454,7 +454,7 @@ graph TD;
 
 ## 4 - STRUTTURA DEL PROGETTO
 ### 4.1 Disposizione delle diretory
-Il progetto prevede la seguente struttura delle directory all'interno dell cartella principale <i>/src</i> che contiene il codice dell'applicazione:
+Il progetto prevede la seguente struttura delle directory all'interno della cartella principale <i>/src</i> che contiene il codice dell'applicazione:
 
 ```bash
 src
@@ -653,7 +653,7 @@ La creazione di una partita prevede un utente autenticato mediante JWT che forni
     "difficulty": 1
 }
 ```
-L'utente autenticato viene poi verificato se appartenente agli user memeorizzati nel database e se ha altre partite ancora in corso. Nel caso di riscontri positivi, si provede a scalare, se disposibile, il credito richiesto per creare una nuova partita. Viene restituito un messaggio positivo e l'identificativo del gioco, se tutto è andato a buon fine.
+L'utente autenticato viene poi verificato se appartenente agli user memorizzati nel database e se ha altre partite ancora in corso. Nel caso di riscontri positivi, si provvede a scalare, se disponibile, il credito richiesto per creare una nuova partita. Viene restituito un messaggio positivo e l'identificativo del gioco, se tutto è andato a buon fine.
 
 <img alt="Create game" src="./UML/PA-Create_Game.drawio.png">
 
@@ -668,14 +668,14 @@ Anche in questo caso si ha un utente che deve essere autenticato (JWT) e deve fo
     "gameId": 3
 }
 ```
-Si verifica che sia l'utente che l'id del gioco siano effettivamente presenti nel database, che l'utente sia davvero colui che sta giocando quella partita e che la partita sia ancora in corso; per ogni mossa valida si scala un credito (tokens), nel caso di vittoria si assegna 1 punto. Nel caso in cui la partita sia ancora in corso si resistuisce un array che rappresenta la disposizione della scacchiera (oppure l'ASCII della tavola, se specificato nella query string); se la partita è terminata con quella giocata viene dato il risultato finale, altrimenti si è sbagliata la mossa e si restituiscono quelle possibili.
+Si verifica che sia l'utente che l'id del gioco siano effettivamente presenti nel database, che l'utente sia davvero colui che sta giocando quella partita e che la partita sia ancora in corso; per ogni mossa valida si scala un credito (tokens), nel caso di vittoria si assegna 1 punto. Nel caso in cui la partita sia ancora in corso si restituisce un array che rappresenta la disposizione della scacchiera (oppure l'ASCII della tavola, se specificato nella query string); se la partita è terminata con quella giocata viene dato il risultato finale, altrimenti si è sbagliata la mossa e si restituiscono quelle possibili.
 
 <img alt="Make move" src="./UML/PA-Make_Move.drawio.png">
 
 Seguendo questa implementazione è chiaro come i token vadano in negativo durante la partita. Questa caratteristica deve essere tenuta in considerazione dall'admin che va ad effettuare la ricarica dei crediti.
 
 ##### 5.2.3.4 Get history
-Questa richiesta prevede sempre un client autenticato, ma non prevede un payload da inviare. Il gioco di cui richiedere le mosse eseguite si specifica direttamente nella URL. Si verifica se lo user è presente nel database, si controlla se ha un numero di tokens almeno pari a zero e se il gioco richiesto esiste nello storico e se è da lui creato. Infine, si resituiscono le mosse giocate.
+Questa richiesta prevede sempre un client autenticato, ma non prevede un payload da inviare. Il gioco di cui richiedere le mosse eseguite si specifica direttamente nella URL. Si verifica se lo user è presente nel database, si controlla se ha un numero di tokens almeno pari a zero e se il gioco richiesto esiste nello storico e se è da lui creato. Infine, si restituiscono le mosse giocate.
 
 <img alt="Get history" src="./UML/PA-Get_History.drawio.png">
 
@@ -744,7 +744,7 @@ Il progetto utilizza il pattern Singleton per gestire la connessione al database
   ```
 
 ### 6.3 Factory
-Il progetto utilizza il pattern Factory per la gestione degli errori. La factory è un design pattern di tipo creazionale che permette, tramite una interfaccia comune, di creare oggetti in una superclasse, ma garantendo la possibilità alle sotto-classi di alterare l'oggetto da crerare. In questo modo, la logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione. In aggiunta, permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza. Infine, migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori, effettuata tramite middleware.
+Il progetto utilizza il pattern Factory per la gestione degli errori. La factory è un design pattern di tipo creazionale che permette, tramite una interfaccia comune, di creare oggetti in una superclasse, ma garantendo la possibilità alle sotto-classi di alterare l'oggetto da creare. In questo modo, la logica per la creazione degli oggetti di errore è centralizzata in un unico punto, rendendo il codice più manutenibile e riducendo la duplicazione. In aggiunta, permette di creare diversi tipi di errori in modo dinamico, facilitando l'estensione e la modifica del comportamento degli errori senza cambiare il codice che li utilizza. Infine, migliora la leggibilità del codice separando la logica di creazione degli errori dalla logica di gestione degli errori, effettuata tramite middleware.
 
 ```bash
 import { StatusCodes } from "http-status-codes";
@@ -985,7 +985,7 @@ production
 ### 7.3 Ulteriori test (VSCode Rest client, node:test e supertest)
 Un metodo molto semplice ed alternativo per effettuare richieste HTTP alle API direttamente da VSCode è quello di utilizzare l'estensione <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">Rest client</a>. Nel progetto è si può creare una cartella "./requests" al cui interno vi sono i file .rest che effettuano le varie chiamate API, utilizzando i diversi verbi HTTP. Questo permette di visualizzare, in maniera dinamica e veloce, come risponde il server alle varie richieste.
 
-In aggiunta, si possono utilzzare le librerie <i>node:test e supertest</i> per scrivere dei test pù accurati, in modo tale che vadano a valuatre non solo le risposte del server, ma anche gli stati del database, interrogandolo direttamente durante i test.
+In aggiunta, si possono utilizzare le librerie <i>node:test e supertest</i> per scrivere dei test pù accurati, in modo tale che vadano a valutare non solo le risposte del server, ma anche gli stati del database, interrogandolo direttamente durante i test.
 
 ####  Riferimenti
 -  Postman e Newman: https://www.postman.com/
